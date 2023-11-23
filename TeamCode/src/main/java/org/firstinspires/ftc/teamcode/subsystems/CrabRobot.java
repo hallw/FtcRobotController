@@ -8,6 +8,7 @@ public class CrabRobot extends Robot {
     public final SimpleMecanumDrive mecanumDrive;
     //public final Intake intake;
     public final Outtake outtake;
+    public final Intake intake;
     public CrabRobot(LinearOpMode opMode) {
         super(opMode);
         //mecanumDrive = new SimpleMecanumDrive(this);
@@ -17,6 +18,8 @@ public class CrabRobot extends Robot {
         //registerSubsystem(intake);
         outtake = new Outtake(this);
         registerSubsystem(outtake);
+        intake = new Intake(this);
+        registerSubsystem(intake);
 
     }
 }

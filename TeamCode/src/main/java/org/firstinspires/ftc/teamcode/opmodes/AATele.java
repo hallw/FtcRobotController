@@ -19,21 +19,39 @@ public class AATele extends LinearOpMode {
 
         while (!isStopRequested()) {
             //EDWARD'S INTAKE
-            boolean buttonA = gamepad2.a;
-            boolean buttonB = gamepad2.b;
+            //TODO1: change intake buttons, current buttons are just for testing purposes
             //telemetry.addData("left_stick_y:", gamepad1.left_stick_y);
             telemetry.update();
             robot.update();
-
-            /*
+            boolean buttonA = gamepad2.a;
+            boolean buttonB = gamepad2.b;
+            boolean buttonX = gamepad2.x;
+            boolean buttonY = gamepad2.y;
+            boolean bumpR = gamepad2.right_bumper;
             if(buttonA) {
-                robot.intake.setPower(1.0);
-            }
-            if(buttonB){
+                robot.intake.moveArm(0.1);
                 robot.intake.setPower(0);
             }
+            if(buttonB) {
+                robot.intake.moveArm(-0.1);
+                robot.intake.setPower(0);
+            }
+            if(buttonX) {
+                robot.intake.reset();
+                robot.intake.setPower(0);
+            }
+            if(buttonY) {
+                robot.intake.intakepos();
+                robot.intake.setPower(1.0);
+            }
+            if(bumpR){
+                robot.intake.outtakepos();
+                robot.intake.setPower(1.0);
+            }
+
+
             robot.mecanumDrive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x));
-            */
+
 
             //UG OUTTAKE
             boolean dpadUp = gamepad1.dpad_up;//big +
@@ -55,6 +73,8 @@ public class AATele extends LinearOpMode {
 
             telemetry.addData("right servo position: ", robot.outtake.getRightServoPos());
             telemetry.addData("left servo position: ", robot.outtake.getLeftServoPos());
+            telemetry.addData("right intake servo position: ", robot.intake.getRightServoPos());
+            telemetry.addData("left intake servo position: ", robot.intake.getLeftServoPos());
             //Log.v("arm", "right servo position: "+ robot.outtake.getRightServoPos());
 
         }
