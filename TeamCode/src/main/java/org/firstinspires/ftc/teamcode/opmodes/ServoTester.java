@@ -13,15 +13,21 @@ public class ServoTester extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         CrabRobot robot = new CrabRobot(this);
         waitForStart();
+        robot.outtake.resetArmPos();
+        robot.outtake.resetDumpPos();
 
         while (!isStopRequested()) {
             //EDWARD'S INTAKE
-            boolean buttonA = gamepad2.a;
+            boolean buttonA = gamepad1.a;
             boolean buttonB = gamepad2.b;
             //telemetry.addData("left_stick_y:", gamepad1.left_stick_y);
             telemetry.update();
             robot.update();
 
+            if(buttonA){
+                robot.outtake.resetArmPos();
+                robot.outtake.resetDumpPos();
+            }
             /*
             if(buttonA) {
                 robot.intake.setPower(1.0);
@@ -41,27 +47,27 @@ public class ServoTester extends LinearOpMode {
             double rightTrigger = gamepad1.right_trigger;
 
             if(dpadUp){
-                robot.outtake.moveArm(0.1);
+                robot.outtake.moveArm(1);
             } if(dpadDown) {
-                robot.outtake.moveArm(-0.1);
+                robot.outtake.moveArm(-1);
             }
             if(gamepad2.dpad_left){
-                robot.intake.moveArmNoLimit(0.1);
+                //robot.intake.moveArmNoLimit(0.1);
                 Log.v("intake", "isMoving " + (gamepad2.dpad_right || gamepad2.dpad_left));
             } else if (gamepad2.dpad_right){
-                robot.intake.moveArmNoLimit(-0.1);
+                //robot.intake.moveArmNoLimit(-0.1);
                 Log.v("intake", "isMoving " + (gamepad2.dpad_right || gamepad2.dpad_left));
             }
             if(gamepad2.a){
-                robot.intake.toBasePos();
+                //robot.intake.toBasePos();
             }
             if(gamepad2.b){
-                robot.intake.toBasePosYield();
+                //robot.intake.toBasePosYield();
             }
             if(gamepad1.left_bumper){
-                robot.intake.setPower(1);
+                //robot.intake.setPower(1);
             } else {
-                robot.intake.setPower(0);
+                //robot.intake.setPower(0);
             }
             /*
             if(dpadRight){
@@ -71,33 +77,37 @@ public class ServoTester extends LinearOpMode {
             }
             */
             if (gamepad1.x) {
-                robot.outtake.toIntakePos();
-                robot.intake.toIntakePos();
+                //robot.outtake.toIntakePos();
+                //robot.intake.toIntakePos();
             } if(gamepad1.b) {
-                robot.outtake.toDumpPos();
-                robot.intake.toOuttakePos();
+                //robot.outtake.toDumpPos();
+                //robot.intake.toOuttakePos();
             } if(gamepad1.y) {
+<<<<<<< Updated upstream
                 robot.outtake.armToTravelPos();
                 robot.outtake.dumperToTravelPos();
+=======
+                //robot.outtake.toTravelPos();
+>>>>>>> Stashed changes
             }
 
             if (gamepad1.a) {
-                robot.outtake.resetArmPos();
+                //robot.outtake.resetArmPos();
             }
 
             if(gamepad1.right_bumper){
-                robot.outtake.dropPixelPos();
+               // robot.outtake.dropPixelPos();
             }
 
-            if(leftTrigger>0) { robot.outtake.moveDumper(-0.1);}
-            if(rightTrigger>0) {robot.outtake.moveDumper( 0.1);}
+            if(leftTrigger>0) { robot.outtake.moveDumper(-1);}
+            if(rightTrigger>0) {robot.outtake.moveDumper( 1);}
 
 
             telemetry.addData("right servo position: ", robot.outtake.get_RightServoPos());
             telemetry.addData("left servo position: ", robot.outtake.get_LeftServoPos());
             telemetry.addData("dumper servo position: ", robot.outtake.getDumperPos());
-            telemetry.addData("intake left arm position: ", robot.intake.getLeftServoPos());
-            telemetry.addData("intake right arm position: ", robot.intake.getRightServoPos());
+            //telemetry.addData("intake left arm position: ", robot.intake.getLeftServoPos());
+            //telemetry.addData("intake right arm position: ", robot.intake.getRightServoPos());
 
         }
     }

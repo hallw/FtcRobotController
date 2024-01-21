@@ -19,15 +19,20 @@ public class CrabRobot extends Robot {
 
     public CrabRobot(LinearOpMode opMode) {
         super(opMode);
-        mecanumDrive = new SimpleMecanumDrive(this);
-        registerSubsystem(mecanumDrive);
-        intake = new Intake(this);
-        registerSubsystem(intake);
+        //mecanumDrive = new SimpleMecanumDrive(this);
+        //registerSubsystem(mecanumDrive);
+        //intake = new Intake(this);
+        //registerSubsystem(intake);
         outtake = new Outtake(this, opMode.telemetry);
         registerSubsystem(outtake); //dualMotorLift is initialized in outtake
+<<<<<<< Updated upstream
         droneLauncher = new DroneLauncher(this, opMode.telemetry);
         registerSubsystem(droneLauncher);
         ds = new RobotDistanceSensor(this, opMode.telemetry);
+=======
+        //droneLauncher = new DroneLauncher(this, opMode.telemetry);
+        //registerSubsystem(droneLauncher);
+>>>>>>> Stashed changes
 
     }
 

@@ -119,12 +119,10 @@ public class AATele extends LinearOpMode {
             if(smartGamepad2.right_stick_button){
                     robot.outtake.prepHang();
             }
-            /*if(smartGamepad2.leftJoystickButton()){
-                robot.outtake.lift.resetEncoder();;
+            if(smartGamepad2.leftJoystickButton()){
+                robot.outtake.lift.resetEncoder();
             }
 
-
-             */
             if (smartGamepad2.dpad_up) {
                 robot.outtake.lift.adjustLift(1, false);
                 //telemetry.addLine("dpad up pressed");
