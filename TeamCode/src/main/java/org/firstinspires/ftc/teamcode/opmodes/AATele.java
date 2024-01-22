@@ -6,8 +6,12 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
+import org.firstinspires.ftc.teamcode.commands.alignBackdrop;
+import org.firstinspires.ftc.teamcode.robot.Subsystem;
 import org.firstinspires.ftc.teamcode.subsystems.CrabRobot;
+import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.subsystems.RobotDistanceSensor;
 import org.firstinspires.ftc.teamcode.subsystems.SmartGamepad;
 
@@ -16,6 +20,14 @@ public class AATele extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         CrabRobot robot = new CrabRobot(this);
+        DriveTrain drivetrain = new DriveTrain(robot);
+        robot.registerSubsystem((Subsystem) drivetrain);
+        DigitalChannel redLED;
+        redLED = robot.hardwareMap.get(DigitalChannel.class, "redLed");
+        // change LED mode from input to output
+        redLED.setMode(DigitalChannel.Mode.OUTPUT);
+        redLED.setState(true);
+
         waitForStart();
         robot.addGamepads(gamepad1, gamepad2);
         SmartGamepad smartGamepad1 = robot.smartGamepad1;
@@ -27,6 +39,9 @@ public class AATele extends LinearOpMode {
         int intakePosition = 0; // 0 = outtake; 1 = intake;
         double intakeStartTime = 0;
 
+        boolean inAlignCmd = false;
+
+
         while (!isStopRequested()) {
             telemetry.update();
             robot.update();
@@ -36,11 +51,14 @@ public class AATele extends LinearOpMode {
             double factor = robot.mecanumDrive.mapJsRadiusVal(joystickRadius,slowMode);
             double jsX = robot.mecanumDrive.mapJsComponents(-gamepad1.left_stick_x, joystickRadius, slowMode);
             double jsY = robot.mecanumDrive.mapJsComponents(gamepad1.left_stick_y, joystickRadius, slowMode);
-            robot.mecanumDrive.setDrivePower(new Pose2d(-jsY, jsX, -(0.8)*gamepad1.right_stick_x));
-            robot.mecanumDrive.setPowerFactor(0.7); //remove with actual robot.
 
+            if(!inAlignCmd) {
+                robot.mecanumDrive.setDrivePower(new Pose2d(-jsY, -jsX, -(0.8) * gamepad1.right_stick_x));
+                robot.mecanumDrive.setPowerFactor(0.7); //remove with actual robot.
+            }
 
-//            robot.mecanumDrive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, gamepad1.left _stick_x, -gamepad1.right_stick_x));
+            // LED
+            redLED.setState(!inAlignCmd);
 
             // do not move
             if(smartGamepad1.right_bumper == false && robot.intake.intakeState == 21){// reverses the intake motor for a few seconds :)
@@ -52,7 +70,7 @@ public class AATele extends LinearOpMode {
             if(smartGamepad1.right_trigger < 0.5 && robot.intake.intakeState == 22){// reverses the intake motor for a few seconds :)
                 robot.intake.intakeState = 0;
             }
-            if(smartGamepad1.right_trigger >= 0.5){// reverses the intake motor for a few seconds :)
+            if(smartGamepad1.right_trigger >= 0.5){
                 robot.intake.intakeState = 22;
             }
 
@@ -72,8 +90,21 @@ public class AATele extends LinearOpMode {
             if(smartGamepad1.x_pressed()){ // test auto output command
                 robot.intake.intakeState = 11;
             }
+            if(smartGamepad1.y_pressed()){
+                if (!inAlignCmd) {
+                    alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, 0.2, 5,16, telemetry);
+                    inAlignCmd = true;
+                    Log.v("Align", "Align called");
 
+                    robot.runCommand(alignCmd);
+                } else {
+                    Log.v("Align", "Exit AlignCmd");
+                    telemetry.addLine("Exit Align");
+                    inAlignCmd = false;
+                }
 
+            }
+            telemetry.addData("inAlignCmd", inAlignCmd);
 
 
             // Outtake automated

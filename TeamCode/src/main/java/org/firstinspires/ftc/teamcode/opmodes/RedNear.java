@@ -59,7 +59,7 @@ public class RedNear extends LinearOpMode {
         robot.outtake.toIntakePos();
         dropIntakePreload dropIntakePreload = new dropIntakePreload(robot);
         autoOutPrep outPrep = new autoOutPrep(robot);
-        autoOutDump outDump = new autoOutDump(robot);
+        autoOutDump outDump = new autoOutDump(robot, drivetrain);
 
         NanoClock clock = NanoClock.system();
         double startTime, currentTime;

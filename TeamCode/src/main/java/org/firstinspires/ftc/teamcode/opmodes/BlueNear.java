@@ -37,7 +37,7 @@ public class BlueNear extends LinearOpMode {
     public static double TAG_DIST = 6;
     public static double PARK_X_CORNER = 0;
     public static double PARK_X_CENTER = 53;
-    public static double PARK_Y = 25;
+    public static double PARK_Y = 30;
     public static double drivePwr = 0.2;
     public static double hCoeff = 5;
 
@@ -60,7 +60,7 @@ public class BlueNear extends LinearOpMode {
         dropIntakePreload dropIntakePreload = new dropIntakePreload(robot);
         autoOutPrep outCmd = new autoOutPrep(robot);
         autoOutPrep outPrep = new autoOutPrep(robot);
-        autoOutDump outDump = new autoOutDump(robot);
+        autoOutDump outDump = new autoOutDump(robot, drivetrain);
 
         NanoClock clock = NanoClock.system();
         double startTime, currentTime;
@@ -102,7 +102,7 @@ public class BlueNear extends LinearOpMode {
             if(!parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+10))
+                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+5))
                                 //.lineTo(new Vector2d(2, 4))
                                 .build()
                 ));
@@ -110,7 +110,7 @@ public class BlueNear extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+10))
+                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+5))
                                 .build()
                 ));
             }
@@ -118,7 +118,7 @@ public class BlueNear extends LinearOpMode {
         } else if (elementPos == 2) { //middle
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
-                            .splineTo(new Vector2d(36, 18), FACE_BACKDROP_HEADERING)
+                            .splineTo(new Vector2d(37, 18), FACE_BACKDROP_HEADERING)
                             .build()
             ));
             //dump purple pixel
@@ -139,14 +139,14 @@ public class BlueNear extends LinearOpMode {
             if(!parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+10))
+                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+5))
                                 .build()
                 ));
             }
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+10))
+                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+5))
                                 .build()
                 ));
             }
@@ -176,14 +176,14 @@ public class BlueNear extends LinearOpMode {
             if(!parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+10))
+                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+5))
                                 .build()
                 ));
             }
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(50, PARK_Y+10))
+                                .lineTo(new Vector2d(50, PARK_Y+5))
                                 .build()
                 ));
             }
