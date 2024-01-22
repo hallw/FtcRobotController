@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import android.util.Log;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -97,31 +99,33 @@ public class alignBackdrop implements Command {
 
         dsL = distanceSensor.distanceLeft();
         dsR = distanceSensor.distanceRight();
-        //telemetry.addData("distL ", dsL);
-        //telemetry.addData("distR ", dsR);
+        //Log.v("Align", "distL "+ dsL);
+        //Log.v("Align", "distR "+ dsR);
 
         // Distance PID
         double measuredPosition = (double) (dsL + dsR) / 2;
         powerFromPIDF = -xPwr * pidfController.update(measuredPosition);
-        //telemetry.addData("forward Pwr ", powerFromPIDF);
+        //Log.v("Align", "forward Pwr "+ powerFromPIDF);
 
         // Heading PID
         double measuredHeading = Math.asin(Math.abs(dsR-dsL)/SENSOR_DIST);
-        //telemetry.addData("measuredHeading ", measuredHeading);
+        //Log.v("Align", "measuredHeading " + measuredHeading);
         int headingSign = (dsL > dsR) ? -1 : 1;
-        //telemetry.addData("headingSign ", headingSign);
+        //Log.v("Align", "headingSign " + headingSign);
         powerFromHeadingPID = Math.abs(headingPID.update(measuredHeading));
-        //telemetry.addData("powerFromHeadingPIO ", powerFromHeadingPID);
+        //Log.v("Align", "powerFromHeadingPIO "+ powerFromHeadingPID);
         powerFromHeadingPID *= hcoef;
-        //telemetry.addData("powerFromHeadingPID after scaling ", powerFromHeadingPID);
-        //telemetry.addData("heading Pwr ", powerFromHeadingPID*headingSign);
+        //Log.v("Align", "powerFromHeadingPID after scaling "+ powerFromHeadingPID);
+        //Log.v("Align", "heading Pwr "+ powerFromHeadingPID*headingSign);
         //telemetry.update();
 
         if(Math.abs(measuredPosition - targetDis) <= DIST_TOL
                 && measuredHeading <= Math.toRadians(HEAD_TOL)){
             isReached = true;
+            //Log.v("Align","Completed");
         } else {
             mecanumDrive.setDrivePower(new Pose2d(powerFromPIDF, 0, powerFromHeadingPID*headingSign));
+            //Log.v("Align","Aligning" + powerFromHeadingPID + " " + powerFromPIDF);
         }
 
 

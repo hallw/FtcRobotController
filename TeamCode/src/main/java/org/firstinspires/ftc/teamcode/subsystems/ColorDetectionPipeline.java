@@ -23,14 +23,14 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
 
     public static double ALIGN_L_L_X_OFFSET = 50;
     public static double ALIGN_L_L_Y_OFFSET = 25;
-    public static double ALIGN_L_R_X_OFFSET = 90;
-    public static double ALIGN_L_R_Y_OFFSET = -5;
+    public static double ALIGN_L_R_X_OFFSET = 100;
+    public static double ALIGN_L_R_Y_OFFSET = 10;
 
     static final int STREAM_WIDTH = 640; // resolution of camera   1280
     static final int STREAM_HEIGHT = 480; // resolution of camera  720
 
     int propPos = 3;
-    boolean align_right = true;
+    boolean align_right = false;
 
     Mat zoomedInput = new Mat();
     Mat HLS = new Mat();
@@ -38,7 +38,7 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
     public int avgCH, avgCL, avgCS;
     public int avgRH, avgRL, avgRS;
     // To zoom in (x2)
-    public static int red1 = 190;
+    public static int red1 = 150;
 
     public static int blue2 = 155;
     Rect viewScope = new Rect(new Point(STREAM_WIDTH / 4, STREAM_HEIGHT / 4), new Point(STREAM_WIDTH * 3 / 4, STREAM_HEIGHT * 3 / 4));
@@ -60,7 +60,7 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
     Point RectBBRCorner;
     boolean stopped = false;
 
-    static final int colorThreshold = 120; //70;
+    static final int colorThreshold = 90; //70;
 
     public ColorDetectionPipeline(boolean align_right) {
         this.align_right = align_right;

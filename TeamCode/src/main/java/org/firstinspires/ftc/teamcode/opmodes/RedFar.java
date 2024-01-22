@@ -25,7 +25,7 @@ public class RedFar extends LinearOpMode {
     public static boolean ALIGN_RIGHT = false; // Align 1 inch from tile right side
     public static double drivePwr = 0.2;
     public static double hCoeff = 5;
-    public static double park_y = -80;
+    public static double park_y = -75;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,13 +39,13 @@ public class RedFar extends LinearOpMode {
         int elementPos;
 
         // Commands
-        alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, drivePwr, hCoeff,8, telemetry);
+        alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, drivePwr, hCoeff,14, telemetry);
         //Servo init code here
         robot.intake.toBasePos();
         robot.outtake.toIntakePos();
         dropIntakePreload dropIntakePreload = new dropIntakePreload(robot);
         autoOutPrep outPrep = new autoOutPrep(robot);
-        autoOutDump outDump = new autoOutDump(robot);
+        autoOutDump outDump = new autoOutDump(robot, drivetrain);
 
         NanoClock clock = NanoClock.system();
         double startTime, currentTime;
@@ -66,7 +66,7 @@ public class RedFar extends LinearOpMode {
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
-                            .splineTo(new Vector2d(11+4, 10), Math.toRadians(-180))
+                            .splineTo(new Vector2d(11+2, 10), Math.toRadians(-180))
                             .build()
             ));
             //Log.v("AUTODEBUG", "2: dump purple");
@@ -79,7 +79,7 @@ public class RedFar extends LinearOpMode {
                             .turn(Math.toRadians(45), 1,0.5)
                             .splineTo(new Vector2d(-2, -2), Math.toRadians(-90))
                             .splineTo(new Vector2d(-2, -68), Math.toRadians(-90))
-                            .splineTo(new Vector2d(31, park_y), Math.toRadians(-90)) // go to backdrop
+                            .splineTo(new Vector2d(29, park_y), Math.toRadians(-90)) // go to backdrop
                             //.lineTo(new Vector2d(2, -74))
                             .build()
             ));
@@ -148,8 +148,8 @@ public class RedFar extends LinearOpMode {
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
-                            .splineTo(new Vector2d(24+4, 7), Math.toRadians(90))
-                            .back(6)
+                            .splineTo(new Vector2d(24+1, 7), Math.toRadians(90))
+                            .back(4)
                             .build()
             ));
             //Log.v("AUTODEBUG", "2: dump purple");

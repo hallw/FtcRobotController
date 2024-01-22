@@ -30,7 +30,7 @@ public class AlignTest extends LinearOpMode {
         //Servo init code here
         alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, drivePwr, hCoeff,15, telemetry);
         autoOutPrep outPrep = new autoOutPrep(robot);
-        autoOutDump outDump = new autoOutDump(robot);
+        autoOutDump outDump = new autoOutDump(robot, drivetrain);
 
         // Start
         waitForStart();

@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import android.util.Log;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.NanoClock;
 
 import org.firstinspires.ftc.teamcode.robot.Command;
 import org.firstinspires.ftc.teamcode.subsystems.CrabRobot;
+import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 
 //autoOut needs to do 3 outtake actions:
 // 1:             robot.intake.setPower(0);
@@ -16,13 +18,15 @@ import org.firstinspires.ftc.teamcode.subsystems.CrabRobot;
 public class autoOutDump implements Command {
 
     CrabRobot robot;
+    DriveTrain mecanumDrive;
     //double duration;
     NanoClock clock;
     long time = System.currentTimeMillis();
     int state = 0;
 
-    public autoOutDump(CrabRobot robot) {
+    public autoOutDump(CrabRobot robot, DriveTrain drive) {
         this.robot= robot;
+        this.mecanumDrive = drive;
         clock = NanoClock.system();
     }
 
@@ -38,16 +42,25 @@ public class autoOutDump implements Command {
 
     @Override
     public void update() {
-        if (state == 1) { // drop pixel time
-            if (System.currentTimeMillis() - time > 1000) {
-                robot.outtake.dumperToTravelPosAuto();
+        if (state == 1) {
+            if (System.currentTimeMillis() - time > 1000) { // drop pixel time
+                mecanumDrive.setDrivePower(new Pose2d(-0.1, 0, 0)); // back a little
+                time = System.currentTimeMillis();
                 state = 2;
+                Log.v("autoOutDump", "-> back a little");
+            }
+        } else if (state == 2) {
+            if (System.currentTimeMillis() - time > 300) {
+                mecanumDrive.setDrivePower(new Pose2d(0, 0, 0));
+                robot.outtake.dumperToTravelPosAuto();
+                state = 3;
+                time = System.currentTimeMillis();
                 Log.v("autoOutDump", "-> dumperToTravelPosAuto()");
             }
-        } else if (state == 2) { // dump pixel, wait for 1 s
+        } else if (state == 3) {
             if (System.currentTimeMillis() - time > 100) { // dumper reset time
                 robot.outtake.toIntakePosAuto(); // back to intake pos
-                state = 3;
+                state = 4;
                 time = System.currentTimeMillis();
                 Log.v("autoOutDump", "-> toIntakePosAuto()");
             }
@@ -60,7 +73,7 @@ public class autoOutDump implements Command {
 
     @Override
     public boolean isCompleted() {
-        if (this.state == 3
+        if (this.state == 4
                 && robot.outtake.swingState == 0
                 && robot.outtake.liftState == 0
                 && (System.currentTimeMillis() - time > 400)) {

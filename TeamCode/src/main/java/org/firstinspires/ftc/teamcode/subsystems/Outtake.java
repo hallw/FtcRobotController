@@ -28,7 +28,7 @@ public class Outtake implements Subsystem{
 
     public static double armIntake_RightA = 0.5; public static double armIntake_LeftA = 0.52;
     private double armTravel_RightA = 0.4950; private double armTravel_LeftA= 0.52;//0.51263, 0.505265
-    public static double armTravelDown_RightA = 0.505; public static double armTravelDown_LeftA= 0.515;//0.51263, 0.505265
+    public static double armTravelDown_RightA = 0.50; public static double armTravelDown_LeftA= 0.52;//0.505, 0.515
 
     private double armDumpLow_Right = 0.462; private double armDumpLow_Left = 0.5536;
     private double armHang_Right = 0.4925; private double armHang_Left = 0.5261;
