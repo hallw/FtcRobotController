@@ -31,7 +31,7 @@ public class Outtake implements Subsystem{
     public static double armTravelDown_RightA = 0.505; public static double armTravelDown_LeftA= 0.515;//0.51263, 0.505265
 
     private double armDumpLow_Right = 0.462; private double armDumpLow_Left = 0.5536;
-    private double armHang_Right = 0.525; private double armHang_Left = 0.492;
+    private double armHang_Right = 0.4925; private double armHang_Left = 0.5261;
 
     private double dumpResetPos = 0.58;//0.5
     private double dumpIntakePos= 0.58;
@@ -44,6 +44,7 @@ public class Outtake implements Subsystem{
     private double dumpTravelPosA = 0.50; //0.37;
     private double dumpCarryPosA = 0.45; //0.32;
     private double dumpDumpPos_auto = 0.31;
+    private double dumpHangPos = 0.6525;
 
     //State Machine
     public int swingState;
@@ -183,7 +184,7 @@ public class Outtake implements Subsystem{
     public void toHangPos(){
         armServo_Right.setPosition(armHang_Right);
         armServo_Left.setPosition(armHang_Left);
-        dumpServo.setPosition(dumpResetPos);
+        dumpServo.setPosition(dumpHangPos);
     }
     public void prepHang(){
         hangState = 1;
