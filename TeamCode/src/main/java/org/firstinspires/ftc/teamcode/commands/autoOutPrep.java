@@ -32,7 +32,7 @@ public class autoOutPrep implements Command {
         this.robot.outtake.prepOuttakeAuto();
         time = System.currentTimeMillis();
         state = 1;
-        Log.v("autoOut", "start()");
+        //Log.v("autoOut", "start()");
     }
 
     @Override
@@ -40,13 +40,13 @@ public class autoOutPrep implements Command {
         if (state == 1) { // wait for lift state to be != 0
             if (System.currentTimeMillis() - time > 100) {
                 state = 2;
-                Log.v("autoOut", "state 1 -> 2");
+                //Log.v("autoOut", "state 1 -> 2");
             }
         } else if (state == 2) {//wait for lift reach state 0
             if (robot.outtake.liftState == 0 && robot.outtake.swingState == 0) { //gamepad2.a done,
                 time = System.currentTimeMillis();
                 state = 3;
-                Log.v("autoOut", "state 2 -> 3");
+                //Log.v("autoOut", "state 2 -> 3");
             }
         } /*else if (state == 3) {
             if (System.currentTimeMillis() - time > 400) { // wait for dumpServo reach carryPos
