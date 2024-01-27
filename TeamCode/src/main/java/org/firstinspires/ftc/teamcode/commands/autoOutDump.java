@@ -37,7 +37,7 @@ public class autoOutDump implements Command {
         robot.outtake.dropPixelPosAuto();
         time = System.currentTimeMillis();
         state = 1;
-        Log.v("autoOut", "dropPixelPosAuto()");
+        //Log.v("autoOut", "dropPixelPosAuto()");
     }
 
     @Override
@@ -47,7 +47,7 @@ public class autoOutDump implements Command {
                 mecanumDrive.setDrivePower(new Pose2d(-0.1, 0, 0)); // back a little
                 time = System.currentTimeMillis();
                 state = 2;
-                Log.v("autoOutDump", "-> back a little");
+                //Log.v("autoOutDump", "-> back a little");
             }
         } else if (state == 2) {
             if (System.currentTimeMillis() - time > 300) {
@@ -55,7 +55,7 @@ public class autoOutDump implements Command {
                 robot.outtake.dumperToTravelPosAuto();
                 state = 3;
                 time = System.currentTimeMillis();
-                Log.v("autoOutDump", "-> dumperToTravelPosAuto()");
+                //Log.v("autoOutDump", "-> dumperToTravelPosAuto()");
             }
         } else if (state == 3) {
             if (System.currentTimeMillis() - time > 100) { // dumper reset time

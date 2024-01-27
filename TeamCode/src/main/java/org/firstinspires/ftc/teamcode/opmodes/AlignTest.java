@@ -36,7 +36,7 @@ public class AlignTest extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
 
-        Log.v("Align", "staring command" );
+        //Log.v("Align", "staring command" );
         robot.runCommand(outPrep);
         robot.runCommand(alignCmd);
         robot.runCommand(outDump);
