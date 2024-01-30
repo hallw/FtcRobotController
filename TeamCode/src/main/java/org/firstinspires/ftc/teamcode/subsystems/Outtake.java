@@ -20,18 +20,32 @@ public class Outtake implements Subsystem{
      //0.09;
     //Constants
     private double syncFactor=0.97;
-    private double armReset_Right = 0.471; private double armReset_Left = 0.5; // + means up and towards intake
-    private double armIntake_Right = 0.51923; private double armIntake_Left = 0.498335;
-    //BELOW NOT TESTED YET
-    private double armTravel_Right = 0.51263; private double armTravel_Left=0.505265;
-    private double armDump_Right = 0.3756; private double armDump_Left = 0.64922;
-    private double armHang_Right = 0.525; private double armHang_Left = 0.492;
+    private double armReset_Right = 0.5; private double armReset_Left = 0.5186; // + means up and towards intake 0.5, 0.5186
+    public static double armIntake_Right = 0.555; public static double armIntake_Left = 0.46;
+    //private double armTravel_Right = 0.51263; private double armTravel_Left= 0.505265;//0.51263, 0.505265
+    public static double armTravel_Right = 0.512; public static double armTravel_Left= 0.505;//0.51263, 0.505265
+    private double armDump_Right = 0.222; private double armDump_Left = 0.81;
 
-    private double dumpResetPos = 0.5;
-    private double dumpIntakePos= 0.441;
-    private double dumpTravelPos = 0.3525;
-    private double dumpCarryPos = 0.6793;
-    private double dumpDumpPos = 0.1013;
+    public static double armIntake_RightA = 0.5 - 0.01; public static double armIntake_LeftA = 0.52 + 0.01;
+    private double armTravel_RightA = 0.4950; private double armTravel_LeftA= 0.52;//0.51263, 0.505265
+    public static double armTravelDown_RightA = 0.50; public static double armTravelDown_LeftA= 0.52;//0.505, 0.515
+
+    private double armDumpLow_Right = 0.462; private double armDumpLow_Left = 0.5536;
+    private double armHang_Right = 0.4925; private double armHang_Left = 0.5261;
+
+    private double dumpResetPos = 0.47;//0.5
+    private double dumpIntakePos= 0.526;
+    private double dumpTravelPos = 0.40; //0.37; //0.1785;
+    private double dumpCarryPos = 0.4; //0.6793;
+    private double dumpLiftCarryPos = 0.5;
+    private double dumpDumpPos = 0.253; //0.29
+
+    private double dumpResetPosA = 0.58; //0.45;
+    private double dumpIntakePosA= 0.526; //0.58;
+    private double dumpTravelPosA = 0.40; //0.50;
+    private double dumpCarryPosA = 0.4; //0.45;
+    private double dumpDumpPos_auto = 0.2;
+    private double dumpHangPos = 0.6525;
 
     //State Machine
     public int swingState;
@@ -95,8 +109,13 @@ public class Outtake implements Subsystem{
         armServo_Left.setPosition(armServo_Left.getPosition()+(0.001*d));
     }
     public void moveArm(double d){
+<<<<<<< HEAD
         armServo_Right.setPosition(armServo_Right.getPosition()+(0.001*-d)); //2 degrees??
         armServo_Left.setPosition(armServo_Left.getPosition()+(0.001*d * syncFactor));
+=======
+        armServo_Right.setPosition(armServo_Right.getPosition()+(0.01*-d)); //2 degrees??
+        armServo_Left.setPosition(armServo_Left.getPosition()+(0.01*d*syncFactor));
+>>>>>>> 580883a (1/28 qualifier code)
     }
     public void moveDumper(double d){
         dumpServo.setPosition(dumpServo.getPosition()+(0.0005*d)); //2 degrees??
@@ -141,8 +160,8 @@ public class Outtake implements Subsystem{
         Log.v("StateMach", "armToTravelPosAuto() called");
     }
     public void armToBackdropPos(){
-        armServo_Right.setPosition(armTravel_Right-0.08);
-        armServo_Left.setPosition(armTravel_Left+0.08);
+        armServo_Right.setPosition(armDump_Right);
+        armServo_Left.setPosition(armDump_Left);
         Log.v("StateMach", "armToBackdropPos() called");
     }
 

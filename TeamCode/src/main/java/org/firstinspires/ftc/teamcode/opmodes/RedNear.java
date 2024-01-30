@@ -20,13 +20,13 @@ import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
 @Config
 @Autonomous
 public class RedNear extends LinearOpMode {
-    public static boolean parkCenter = false;
+    public static boolean parkCenter = true;
     public static boolean IS_RED = true;
     public static boolean ALIGN_RIGHT = true;
     public static double POS1_SPL1_X = 25;
     public static double POS1_SPL1_Y = -5;
     public static double POS1_DUMP_X = 32;
-    public static double DUMP_Y = -25;
+    public static double DUMP_Y = -35;
 
     public static double POS2_SPL1_X = 37;
     public static double POS2_SPL1_Y = -15;
@@ -94,10 +94,10 @@ public class RedNear extends LinearOpMode {
                             .lineTo(new Vector2d(POS1_DUMP_X, DUMP_Y))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "10: dump done");
 
             // Park
@@ -134,10 +134,10 @@ public class RedNear extends LinearOpMode {
                             .lineTo(new Vector2d(23, DUMP_Y))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -172,10 +172,10 @@ public class RedNear extends LinearOpMode {
                             .lineTo(new Vector2d(18, DUMP_Y))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(

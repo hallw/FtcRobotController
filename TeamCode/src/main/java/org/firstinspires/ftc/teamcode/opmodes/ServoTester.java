@@ -69,30 +69,26 @@ public class ServoTester extends LinearOpMode {
             } else {
                 //robot.intake.setPower(0);
             }
-            /*
+
             if(dpadRight){
-                robot.outtake.moveL(0.1);
+                robot.outtake.lift.adjustLift(1, true);
             } if(dpadLeft) {
-                robot.outtake.moveL(-0.1);
+                robot.outtake.lift.adjustLift(-1, true);
             }
-            */
+
             if (gamepad1.x) {
                 //robot.outtake.toIntakePos();
                 //robot.intake.toIntakePos();
             } if(gamepad1.b) {
-                //robot.outtake.toDumpPos();
-                //robot.intake.toOuttakePos();
+                robot.outtake.dropPixelPos();
             } if(gamepad1.y) {
-<<<<<<< Updated upstream
                 robot.outtake.armToTravelPos();
                 robot.outtake.dumperToTravelPos();
-=======
                 //robot.outtake.toTravelPos();
->>>>>>> Stashed changes
             }
 
             if (gamepad1.a) {
-                //robot.outtake.resetArmPos();
+                robot.outtake.prepOuttake();
             }
 
             if(gamepad1.right_bumper){
