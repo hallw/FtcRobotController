@@ -25,7 +25,7 @@ public class RedFar extends LinearOpMode {
     public static boolean ALIGN_RIGHT = false; // Align 1 inch from tile right side
     public static double drivePwr = 0.2;
     public static double hCoeff = 5;
-    public static double park_y = -75;
+    public static double park_y = -85;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -66,7 +66,7 @@ public class RedFar extends LinearOpMode {
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
-                            .splineTo(new Vector2d(11+2, 10), Math.toRadians(-180))
+                            .splineTo(new Vector2d(11+2, 9), Math.toRadians(-180))
                             .build()
             ));
             //Log.v("AUTODEBUG", "2: dump purple");
@@ -77,17 +77,17 @@ public class RedFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
                             .turn(Math.toRadians(45), 1,0.5)
-                            .splineTo(new Vector2d(-2, -2), Math.toRadians(-90))
-                            .splineTo(new Vector2d(-2, -68), Math.toRadians(-90))
+                            .splineTo(new Vector2d(0, -2), Math.toRadians(-90))
+                            .splineTo(new Vector2d(0, -68), Math.toRadians(-90))
                             .splineTo(new Vector2d(29, park_y), Math.toRadians(-90)) // go to backdrop
                             //.lineTo(new Vector2d(2, -74))
                             .build()
             ));
             //Log.v("AUTODEBUG", "4: dump yellow");
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "5: park");
             // Park
             if(parkCenter){
@@ -118,15 +118,15 @@ public class RedFar extends LinearOpMode {
             // go to back drop
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                            .splineTo(new Vector2d(-2, -2), Math.toRadians(-90))
-                            .splineTo(new Vector2d(-2, -68), Math.toRadians(-90))
+                            .splineTo(new Vector2d(0, -2), Math.toRadians(-90))
+                            .splineTo(new Vector2d(0, -68), Math.toRadians(-90))
                             .splineTo(new Vector2d(22, park_y), Math.toRadians(-90))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -160,17 +160,17 @@ public class RedFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
                             .turn(Math.toRadians(45), 1,0.5)
-                            .splineTo(new Vector2d(-2, -2), Math.toRadians(-90))
-                            .splineTo(new Vector2d(-2, -68), Math.toRadians(-90))
+                            .splineTo(new Vector2d(0, -2), Math.toRadians(-90))
+                            .splineTo(new Vector2d(0, -68), Math.toRadians(-90))
                             .splineTo(new Vector2d(16, park_y), Math.toRadians(-90)) // go to backdrop
                             //.lineTo(new Vector2d(2, -74))
                             .build()
             ));
             //Log.v("AUTODEBUG", "4: dump yellow");
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "5: park");
             // Park
             if(parkCenter){

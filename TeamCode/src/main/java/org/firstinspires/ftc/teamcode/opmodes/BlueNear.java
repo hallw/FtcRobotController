@@ -37,7 +37,7 @@ public class BlueNear extends LinearOpMode {
     public static double TAG_DIST = 6;
     public static double PARK_X_CORNER = 0;
     public static double PARK_X_CENTER = 53;
-    public static double PARK_Y = 30;
+    public static double PARK_Y = 40;
     public static double drivePwr = 0.2;
     public static double hCoeff = 5;
 
@@ -92,10 +92,10 @@ public class BlueNear extends LinearOpMode {
                             .lineTo(new Vector2d(20, PARK_Y))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "10: dump done");
 
             // Park
@@ -131,10 +131,10 @@ public class BlueNear extends LinearOpMode {
                             .lineTo(new Vector2d(25, PARK_Y)) //24 previous
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             // Park
             if(!parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -168,10 +168,10 @@ public class BlueNear extends LinearOpMode {
                             .lineTo(new Vector2d(32, PARK_Y))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             // Park
             if(!parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(

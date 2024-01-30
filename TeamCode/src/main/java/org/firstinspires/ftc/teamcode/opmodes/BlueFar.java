@@ -26,7 +26,7 @@ public class BlueFar extends LinearOpMode {
 
     public static double drivePwr = 0.2;
     public static double hCoeff = 5;
-    public static double park_y = 76;
+    public static double park_y = 85;
 
 
     @Override
@@ -85,10 +85,12 @@ public class BlueFar extends LinearOpMode {
                             //.lineTo(new Vector2d(2, -74))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
+
             //Log.v("AUTODEBUG", "4: dump yellow");
             //dump yellow pixel
             //Log.v("AUTODEBUG", "5: park");
@@ -126,10 +128,11 @@ public class BlueFar extends LinearOpMode {
                             .splineTo(new Vector2d(29, park_y), Math.toRadians(88))
                             .build()
             ));
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -169,10 +172,10 @@ public class BlueFar extends LinearOpMode {
             ));
             //Log.v("AUTODEBUG", "4: dump yellow");
             //dump yellow pixel
-            robot.runCommand(outPrep);
-            robot.runCommand(alignCmd);
+            //robot.runCommand(outPrep);
+            //robot.runCommand(alignCmd);
             //dump yellow pixel
-            robot.runCommand(outDump);
+            //robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
