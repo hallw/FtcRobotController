@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,8 +10,17 @@ import org.firstinspires.ftc.teamcode.subsystems.CrabRobot;
 import org.firstinspires.ftc.teamcode.subsystems.RobotDistanceSensor;
 import org.firstinspires.ftc.teamcode.subsystems.SmartGamepad;
 
+@Config
 @TeleOp
-public class dumpTest_tele extends LinearOpMode {
+public class TestArmDumper extends LinearOpMode {
+    public static double dumperPos = 0.35;  // - to turn backwards
+    public static double dumperPosStep = 0.01;
+    public static int slideHt = 0;
+    public static int slideHtStep = 1;
+    public static double armLeftIntake = 0.54; //+ to move back
+    public static double armRightIntake = 0.44; // - to move back
+    public static double armStep = 0.01;
+    //armIntake_Right = 0.555; public static double armIntake_Left = 0.46;
     @Override
     public void runOpMode() throws InterruptedException {
         CrabRobot robot = new CrabRobot(this);
@@ -19,8 +29,7 @@ public class dumpTest_tele extends LinearOpMode {
         SmartGamepad smartGamepad1 = robot.smartGamepad1;
         SmartGamepad smartGamepad2 = robot.smartGamepad2;
         RobotDistanceSensor distanceSensor = robot.ds;
-        double dumperPos = 0;
-        int slideHt = 0;
+
 
         NanoClock clock = NanoClock.system();
         double prevTime = clock.seconds();
@@ -36,26 +45,10 @@ public class dumpTest_tele extends LinearOpMode {
             double factor = robot.mecanumDrive.mapJsRadiusVal(joystickRadius,slowMode);
             double jsX = robot.mecanumDrive.mapJsComponents(-gamepad1.left_stick_x, joystickRadius, slowMode);
             double jsY = robot.mecanumDrive.mapJsComponents(gamepad1.left_stick_y, joystickRadius, slowMode);
-            robot.mecanumDrive.setDrivePower(new Pose2d(-jsY, -jsX, -(0.8)*gamepad1.right_stick_x));
+            robot.mecanumDrive.setDrivePower(new Pose2d(-jsY, jsX, -(0.8)*gamepad1.right_stick_x));
             robot.mecanumDrive.setPowerFactor(0.7); //remove with actual robot.
 
-
-//            robot.mecanumDrive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x));
-
             // do not move
-            if(smartGamepad1.right_bumper == false && robot.intake.intakeState == 21){// reverses the intake motor for a few seconds :)
-                robot.intake.intakeState = 0;
-            }
-            if(smartGamepad1.right_bumper){// reverses the intake motor for a few seconds :)
-                robot.intake.intakeState = 21;
-            }
-            if(smartGamepad1.right_trigger < 0.5 && robot.intake.intakeState == 22){// reverses the intake motor for a few seconds :)
-                robot.intake.intakeState = 0;
-            }
-            if(smartGamepad1.right_trigger >= 0.5){// reverses the intake motor for a few seconds :)
-                robot.intake.intakeState = 22;
-            }
-
             // INTAKE
             if(smartGamepad1.a_pressed()){
                 if(intakePosition == 0 && robot.intake.intakeState == 0) {
@@ -73,38 +66,42 @@ public class dumpTest_tele extends LinearOpMode {
                 robot.intake.intakeState = 11;
             }
 
-
-
-
-            // Outtake automated
+            // Outtake tests
+            //Slide
+            telemetry.addData("Slide Height ", slideHt);
+            if(smartGamepad2.dpad_up_pressed()){
+                robot.outtake.lift.goToHtInches(slideHt);
+                slideHt += slideHtStep;
+            }
+            if(smartGamepad2.dpad_down_pressed()){
+                robot.outtake.lift.goToHtInches(slideHt);
+                slideHt -= slideHtStep;
+            }
+            //Arms
+            telemetry.addData("Arm Left ", armLeftIntake);
+            telemetry.addData("Arm Right ", armRightIntake);
+            if(smartGamepad2.x_pressed()){
+                robot.outtake.armServo_Left.setPosition(armLeftIntake);
+                robot.outtake.armServo_Right.setPosition(armRightIntake);
+                armLeftIntake += armStep;
+                armRightIntake -= armStep;
+            }
+            if(smartGamepad2.y_pressed()){
+                robot.outtake.armServo_Left.setPosition(armLeftIntake);
+                robot.outtake.armServo_Right.setPosition(armRightIntake);
+                armLeftIntake -= armStep;
+                armRightIntake += armStep;
+            }
+            // Dumper
+            telemetry.addData("DumperPos ",dumperPos);
             if(smartGamepad2.a_pressed()){
-                telemetry.addData("DumperPos ",dumperPos);
                 robot.outtake.setDumpServoPos(dumperPos);
-                dumperPos += 0.01;
+                dumperPos += dumperPosStep;
             }
 
             if(smartGamepad2.b_pressed()){
-                telemetry.addData("DumperPos ",dumperPos);
                 robot.outtake.setDumpServoPos(dumperPos);
-                dumperPos -= 0.01;
-            }
-            //Slide
-            if(smartGamepad2.dpad_up_pressed()){
-                telemetry.addData("Slide Height ", slideHt);
-                robot.outtake.lift.goToHtInches(slideHt);
-                slideHt += 1;
-            }
-            if(smartGamepad2.dpad_down_pressed()){
-                telemetry.addData("Slide Height ", slideHt);
-                robot.outtake.lift.goToHtInches(slideHt);
-                slideHt -= 1;
-            }
-            //Arms
-            if(smartGamepad2.right_bumper){
-                robot.outtake.armToBackdropPos();
-            }
-            if(smartGamepad2.left_bumper){
-                robot.outtake.armToTravelPosAuto();
+                dumperPos -= dumperPosStep;
             }
 
 

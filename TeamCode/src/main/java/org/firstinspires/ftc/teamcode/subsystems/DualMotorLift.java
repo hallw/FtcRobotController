@@ -111,7 +111,7 @@ public class DualMotorLift implements Subsystem {
             pidfController.reset();
             pidfController.setTargetPosition(ticksToInches(ticks));
         }
-        //Log.v("Lift: status", String.format("Lift moving to height %f", ticksToInches(slideMotorL.getTargetPosition())));
+        Log.v("PIDLift: Debug: ", String.format("Lift moving to height %f", ticksToInches(slideMotorL.getTargetPosition())));
     }
 
     public void goToHtInches(double inches) {
@@ -260,20 +260,23 @@ public class DualMotorLift implements Subsystem {
         }//if target is reached and not in manual mode, set velocity of right motor to 0
         else{
             if (!isLevelReached()) {
-                double measuredPosition = (double) ticksToInches(slideMotorR.getCurrentPosition());
+                // TODO: Update measuredPosition with the slideMotor which connects encoder
+                double measuredPosition = (double) ticksToInches(slideMotorL.getCurrentPosition());
                 powerFromPIDF = pidfController.update(measuredPosition);
                 if (powerFromPIDF < PID_RANGE-SLIDE_HOLD_POWER) {
                     powerFromPIDF += SLIDE_HOLD_POWER;
                 } else if (powerFromPIDF < PID_RANGE) {
                     powerFromPIDF = PID_RANGE;
                 }
-                //Log.v("PIDLift: Debug: ", String.format("Target pos: %4.2f, current pos: %4.2f, last error: %4.2f, velocity: %4.2f, set power to: %4.2f",
-                //        pidfController.getTargetPosition(), measuredPosition, pidfController.getLastError(), slideMotorL.getVelocity(), powerFromPIDF));
+                Log.v("PIDLift: Debug: ", String.format("Target pos: %4.2f, current pos: %4.2f, last error: %4.2f, velocity: %4.2f, set power to: %4.2f",
+                       pidfController.getTargetPosition(), measuredPosition, pidfController.getLastError(), slideMotorL.getVelocity(), powerFromPIDF));
                 //telemetry.addData("Target pos", pidfController.getTargetPosition());
                 //telemetry.addData("Measur pos", measuredPosition);
                 //telemetry.addData("slidePower", powerFromPIDF);
+                //telemetry.update();
                 slideMotorL.setPower(powerFromPIDF);
                 slideMotorR.setPower(powerFromPIDF);
+
             }
         }
         //telemetry.addLine("Slide motor set to " + ticksToInches(slideMotorL.getTargetPosition()));
