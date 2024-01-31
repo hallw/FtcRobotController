@@ -179,7 +179,7 @@ public class Outtake implements Subsystem{
     public void toHangPos(){
         armServo_Right.setPosition(armHang_Right);
         armServo_Left.setPosition(armHang_Left);
-        dumpServo.setPosition(dumpResetPos);
+        dumpServo.setPosition(dumpHangPos);
     }
     public void prepHang(){
         hangState = 1;

@@ -14,7 +14,7 @@ public class ServoTester extends LinearOpMode {
         CrabRobot robot = new CrabRobot(this);
         waitForStart();
         robot.outtake.resetArmPos();
-        robot.outtake.resetDumpPos();
+        //robot.outtake.resetDumpPos();
 
         while (!isStopRequested()) {
             //EDWARD'S INTAKE
@@ -26,7 +26,7 @@ public class ServoTester extends LinearOpMode {
 
             if(buttonA){
                 robot.outtake.resetArmPos();
-                robot.outtake.resetDumpPos();
+                //robot.outtake.resetDumpPos();
             }
             /*
             if(buttonA) {
