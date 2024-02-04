@@ -11,19 +11,20 @@ import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
 public class Intake implements Subsystem {
     //Hardware: 1 motor, 2 servo
-    double syncFactor = 1.05;
+    double syncFactor = 1.00;
+    public double LPos, RPos;
     private DcMotorEx intakeMotor;
     private double motorPosition = 0; private Servo intakeServoL;
     private Servo intakeServoR;
     private double baseposl = 0.217;
     private double baseposr = 0.76715;
-    private double baseposl_yield = 0.36+0.25;//+0.4
-    private double baseposr_yield = 0.615-0.25;//-0.4
-    private double outtakeposL = 0.814 + 0.033; //0.804
-    private double outtakeposR = 0.1403 - 0.033; //0.1503
+    private double baseposl_yield = 0.36 + 0.37;
+    private double baseposr_yield = 0.615 - 0.37;
+    private double outtakeposL = 0.814 - 0.01; //0.804
+    private double outtakeposR = 0.1403 + 0.01; //0.1503
     //placeholder outtake position, may change depending on outtake
-    private double intakeposL = 0.129+0.037;//+0.037
-    private double intakeposR = 0.8595-0.037;//-0.037
+    private double intakeposL = 0.129+0.037-0.135;
+    private double intakeposR = 0.8595-0.037+0.135;
     private double lowerlimitL = 0.814;
     private double lowerlimitR = 0.13;
     private double upperlimitL = 0.09;
@@ -163,6 +164,10 @@ public class Intake implements Subsystem {
                 intakeMotor.setPower(0);
                 toBasePosYield();
             }
+        } else if (intakeState == 40) {
+            intakeServoL.setPosition(LPos);
+        } else if (intakeState == 41) {
+            intakeServoR.setPosition(RPos);
         }
 
 

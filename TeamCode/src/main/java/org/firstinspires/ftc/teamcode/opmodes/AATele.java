@@ -48,7 +48,7 @@ public class AATele extends LinearOpMode {
 
             boolean slowMode = gamepad1.left_bumper;
             double joystickRadius = Math.min(1,Math.sqrt(Math.pow(gamepad1.left_stick_y,2) + Math.pow(gamepad1.left_stick_x,2)));
-            double factor = robot.mecanumDrive.mapJsRadiusVal(joystickRadius,slowMode);
+            //double factor = robot.mecanumDrive.mapJsRadiusVal(joystickRadius,slowMode);
             double jsX = robot.mecanumDrive.mapJsComponents(-gamepad1.left_stick_x, joystickRadius, slowMode);
             double jsY = robot.mecanumDrive.mapJsComponents(gamepad1.left_stick_y, joystickRadius, slowMode);
 
