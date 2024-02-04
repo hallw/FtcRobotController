@@ -21,16 +21,16 @@ public class Outtake implements Subsystem{
     //Constants
     private double syncFactor=0.97;
     private double armReset_Right = 0.56; private double armReset_Left = 0.42; // + means up and towards intake 0.5, 0.5186
-    public static double armIntake_Right = 0.46; public static double armIntake_Left = 0.52;//Arm right+/left- is to go back
+    public static double armIntake_Right = 0.47; public static double armIntake_Left = 0.51;//Arm right+/left- is to go back
     //private double armTravel_Right = 0.51263; private double armTravel_Left= 0.505265;//0.51263, 0.505265
     //Arm right+/left- is to go back
     public static double armTravel_Right = 0.46; public static double armTravel_Left= 0.52;
-    private double armDump_Right = 0.83; private double armDump_Left = 0.15;
+    private double armDump_Right = 0.91; private double armDump_Left = 0.07;
 
     public static double armIntake_RightA = armIntake_Right; public static double armIntake_LeftA = armIntake_Left;
     public static double armTravelDown_RightA = 0.50; public static double armTravelDown_LeftA= 0.52;//0.505, 0.515
-    private double dumpIntakePos= 0.34; double dumpTravelPos = 0.40; //0.37; //0.1785;
-    private double dumpCarryPos = 0.21; double dumpLiftCarryPos = 0.21;
+    private double dumpIntakePos= 0.35; double dumpTravelPos = 0.40; //0.37; //0.1785;
+    private double dumpCarryPos = 0.23; double dumpLiftCarryPos = 0.23;
     private double dumpDumpPos = 0.11;
 
     private double dumpIntakePosA= dumpIntakePos; //0.58;
@@ -38,8 +38,8 @@ public class Outtake implements Subsystem{
     private double dumpCarryPosA = dumpCarryPos; //0.45;
     private double dumpDumpPos_auto = dumpDumpPos;
     // Hang
-    private double armHang_Right = 0.56; private double armHang_Left = 0.42;
-    private double dumpHangPos = 0.28;
+    private double armHang_Right = 0.53; private double armHang_Left = 0.45;
+    private double dumpHangPos = 0.29;
 
     //State Machine
     public int swingState;
@@ -340,7 +340,7 @@ public class Outtake implements Subsystem{
             if(time - tempStartTime >= 500){
                 Log.v("StateMach", "liftState = 2. Start toCarryPos");
                 this.armToBackdropPos();
-                this.dumperToTravelPos();
+                dumpServo.setPosition(dumpLiftCarryPos);
                 liftState=3;
             }
         }
