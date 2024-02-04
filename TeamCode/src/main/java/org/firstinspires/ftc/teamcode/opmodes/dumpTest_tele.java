@@ -27,9 +27,20 @@ public class dumpTest_tele extends LinearOpMode {
         int intakePosition = 0; // 0 = outtake; 1 = intake;
         double intakeStartTime = 0;
 
+        int gp2_x_pressed = 0;
+        int gp2_y_pressed = 0;
+
+        double armLeftPos = 0.52;
+        double armRightPos = 0.44;
+        double armStep = 0.02;
+
         while (!isStopRequested()) {
             telemetry.update();
             robot.update();
+
+            robot.outtake.armServo_Left.setPosition(armLeftPos);
+            robot.outtake.armServo_Right.setPosition(armRightPos);
+            robot.outtake.setDumpServoPos(dumperPos);
 
             boolean slowMode = gamepad1.left_bumper;
             double joystickRadius = Math.min(1,Math.sqrt(Math.pow(gamepad1.left_stick_y,2) + Math.pow(gamepad1.left_stick_x,2)));
@@ -77,14 +88,13 @@ public class dumpTest_tele extends LinearOpMode {
 
 
             // Outtake automated
+            telemetry.addData("DumperPos ",dumperPos);
             if(smartGamepad2.a_pressed()){
-                telemetry.addData("DumperPos ",dumperPos);
                 robot.outtake.setDumpServoPos(dumperPos);
                 dumperPos += 0.01;
             }
 
             if(smartGamepad2.b_pressed()){
-                telemetry.addData("DumperPos ",dumperPos);
                 robot.outtake.setDumpServoPos(dumperPos);
                 dumperPos -= 0.01;
             }
@@ -105,6 +115,20 @@ public class dumpTest_tele extends LinearOpMode {
             }
             if(smartGamepad2.left_bumper){
                 robot.outtake.armToTravelPosAuto();
+            }
+            telemetry.addData("armLeftPos", armLeftPos);
+            telemetry.addData("armRightPos", armRightPos);
+            if (smartGamepad2.x_pressed()) { // move towards intake
+                robot.outtake.armServo_Left.setPosition(armLeftPos);
+                robot.outtake.armServo_Right.setPosition(armRightPos);
+                armLeftPos += armStep;
+                armRightPos -= armStep;
+            }
+            if (smartGamepad2.y_pressed()) { // move away from intake
+                robot.outtake.armServo_Left.setPosition(armLeftPos);
+                robot.outtake.armServo_Right.setPosition(armRightPos);
+                armLeftPos -= armStep;
+                armRightPos += armStep;
             }
 
 

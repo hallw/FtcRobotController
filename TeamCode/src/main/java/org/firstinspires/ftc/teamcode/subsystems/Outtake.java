@@ -21,31 +21,31 @@ public class Outtake implements Subsystem{
     //Constants
     private double syncFactor=1.05;
     private double armReset_Right = 0.5; private double armReset_Left = 0.5186; // + means up and towards intake 0.5, 0.5186
-    public static double armIntake_Right = 0.555; public static double armIntake_Left = 0.46;
+    public static double armIntake_Right = 0.42; public static double armIntake_Left = 0.54;
     //private double armTravel_Right = 0.51263; private double armTravel_Left= 0.505265;//0.51263, 0.505265
-    public static double armTravel_Right = 0.512; public static double armTravel_Left= 0.505;//0.51263, 0.505265
-    private double armDump_Right = 0.222; private double armDump_Left = 0.81;
+    public static double armTravel_Right = 0.4; public static double armTravel_Left= 0.56;//0.51263, 0.505265
+    private double armDump_Right = 0.8; private double armDump_Left = 0.16;
 
-    public static double armIntake_RightA = 0.5 - 0.01; public static double armIntake_LeftA = 0.52 + 0.01;
+    public static double armIntake_RightA = 0.4; public static double armIntake_LeftA = 0.56;
     private double armTravel_RightA = 0.4950; private double armTravel_LeftA= 0.52;//0.51263, 0.505265
     public static double armTravelDown_RightA = 0.50; public static double armTravelDown_LeftA= 0.52;//0.505, 0.515
 
     private double armDumpLow_Right = 0.462; private double armDumpLow_Left = 0.5536;
-    private double armHang_Right = 0.4925; private double armHang_Left = 0.5261;
+    private double armHang_Right = 0.46; private double armHang_Left = 0.5;
 
     private double dumpResetPos = 0.47;//0.5
-    private double dumpIntakePos= 0.526;
-    private double dumpTravelPos = 0.40; //0.37; //0.1785;
-    private double dumpCarryPos = 0.4; //0.6793;
-    private double dumpLiftCarryPos = 0.5;
-    private double dumpDumpPos = 0.253; //0.29
+    private double dumpIntakePos= 0.62;
+    private double dumpTravelPos = 0.52; //0.37; //0.1785;
+    private double dumpCarryPos = 0.52; //0.6793;
+    private double dumpLiftCarryPos = 0.48;
+    private double dumpDumpPos = 0.37; //0.29
 
     private double dumpResetPosA = 0.58; //0.45;
     private double dumpIntakePosA= 0.526; //0.58;
     private double dumpTravelPosA = 0.40; //0.50;
     private double dumpCarryPosA = 0.4; //0.45;
     private double dumpDumpPos_auto = 0.2;
-    private double dumpHangPos = 0.6525;
+    private double dumpHangPos = 0.51;
 
     //State Machine
     public int swingState;
@@ -71,8 +71,8 @@ public class Outtake implements Subsystem{
     private long tempDelay = 1000;
 
     //Hardware
-    private Servo armServo_Right;
-    private Servo armServo_Left;  //    '/[L^R]\'
+    public Servo armServo_Right;
+    public Servo armServo_Left;  //    '/[L^R]\'
     private Servo dumpServo;
     public DualMotorLift lift;
     private Telemetry telemetry;
@@ -275,7 +275,7 @@ public class Outtake implements Subsystem{
             long time = System.currentTimeMillis();
             if(swingDelayDone(time, swingDownDelay)){
                 swingState = 12;
-                lift.goToHt(lift.inchToTicks(-0.3));
+                lift.goToHt(lift.inchToTicks(0));
                 Log.v("StateMach", "lower swing tate: 11 -> 12. lift.goToHt " + 0);
                 telemetry.addLine("swingState == 11");
             }
@@ -346,7 +346,7 @@ public class Outtake implements Subsystem{
             if(time - tempStartTime >= 500){
                 Log.v("StateMach", "liftState = 2. Start toCarryPos");
                 this.armToBackdropPos();
-                this.dumperToTravelPos();
+                this.dumpServo.setPosition(dumpLiftCarryPos);
                 liftState=3;
             }
         }
