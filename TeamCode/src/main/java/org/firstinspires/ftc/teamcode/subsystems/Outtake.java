@@ -29,8 +29,8 @@ public class Outtake implements Subsystem{
 
     public static double armIntake_RightA = armIntake_Right; public static double armIntake_LeftA = armIntake_Left;
     public static double armTravelDown_RightA = 0.50; public static double armTravelDown_LeftA= 0.52;//0.505, 0.515
-    private double dumpIntakePos= 0.35; double dumpTravelPos = 0.40; //0.37; //0.1785;
-    private double dumpCarryPos = 0.23; double dumpLiftCarryPos = 0.23;
+    private double dumpIntakePos= 0.35; double dumpTravelPos = 0.37; //0.37; //0.1785;
+    private double dumpCarryPos = 0.27; double dumpLiftCarryPos = 0.21;
     private double dumpDumpPos = 0.11;
 
     private double dumpIntakePosA= dumpIntakePos; //0.58;
@@ -122,7 +122,7 @@ public class Outtake implements Subsystem{
 
     public void toIntakePosAuto(){
         Log.v("StateMach", "toIntakePos() called");
-        swingState = 20;
+        swingState = 10; //20;
         swingStartTime = System.currentTimeMillis();
         //armToTravelPos();
         //dumperToIntakePos();
@@ -327,7 +327,7 @@ public class Outtake implements Subsystem{
             long time = System.currentTimeMillis();
             if(liftDelayDone(time)){
                 liftState = 2;
-                dumpServo.setPosition(dumpLiftCarryPos);
+                dumpServo.setPosition(dumpCarryPos);
                 //this.armToBackdropPos();
                 //this.dumperToTravelPos();
                 Log.v("StateMach", "dumper move to carry pos, liftState 1 " + (time - liftStartTime));
