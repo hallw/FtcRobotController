@@ -66,8 +66,8 @@ public class DualMotorLift implements Subsystem {
         slideMotorL.setTargetPositionTolerance(inchToTicks(0.3)); //HEIGHT_DIFF_TOLERANCE);
         slideMotorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slideMotorR.setDirection(DcMotorSimple.Direction.REVERSE);
-        //slideMotorL.setDirection(DcMotorSimple.Direction.REVERSE);
+        //slideMotorR.setDirection(DcMotorSimple.Direction.REVERSE);
+        slideMotorL.setDirection(DcMotorSimple.Direction.REVERSE);
         if (mode== Mode.RIGHT_FOLLOW_LEFT) {
             slideMotorR.setTargetPosition(0);
             slideMotorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
