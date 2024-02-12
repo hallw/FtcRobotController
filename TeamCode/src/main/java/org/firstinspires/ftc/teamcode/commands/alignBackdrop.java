@@ -99,13 +99,13 @@ public class alignBackdrop implements Command {
 
         dsL = distanceSensor.distanceLeft();
         dsR = distanceSensor.distanceRight();
-        //Log.v("Align", "distL "+ dsL);
-        //Log.v("Align", "distR "+ dsR);
+        Log.v("autoOutAlign", "distL "+ dsL);
+        Log.v("autoOutAlign", "distR "+ dsR);
 
         // Distance PID
         double measuredPosition = (double) (dsL + dsR) / 2;
         powerFromPIDF = -xPwr * pidfController.update(measuredPosition);
-        //Log.v("Align", "forward Pwr "+ powerFromPIDF);
+        Log.v("autoOutAlign", "forward Pwr "+ powerFromPIDF);
 
         // Heading PID
         double measuredHeading = Math.asin(Math.abs(dsR-dsL)/SENSOR_DIST);

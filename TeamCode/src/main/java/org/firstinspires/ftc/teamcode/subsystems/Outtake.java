@@ -21,25 +21,25 @@ public class Outtake implements Subsystem{
     //Constants
     private double syncFactor=0.97;
     private double armReset_Right = 0.56; private double armReset_Left = 0.42; // + means up and towards intake 0.5, 0.5186
-    public static double armIntake_Right = 0.47; public static double armIntake_Left = 0.51;//Arm right+/left- is to go back
+    public static double armIntake_Right = 0.43; public static double armIntake_Left = 0.55;//Arm right+/left- is to go back
     //private double armTravel_Right = 0.51263; private double armTravel_Left= 0.505265;//0.51263, 0.505265
     //Arm right+/left- is to go back
-    public static double armTravel_Right = 0.46; public static double armTravel_Left= 0.52;
-    private double armDump_Right = 0.91; private double armDump_Left = 0.07;
+    public static double armTravel_Right = 0.42; public static double armTravel_Left= 0.56;
+    private double armDump_Right = 0.88; private double armDump_Left = 0.10;
 
     public static double armIntake_RightA = armIntake_Right; public static double armIntake_LeftA = armIntake_Left;
-    public static double armTravelDown_RightA = 0.50; public static double armTravelDown_LeftA= 0.52;//0.505, 0.515
-    private double dumpIntakePos= 0.35; double dumpTravelPos = 0.37; //0.37; //0.1785;
-    private double dumpCarryPos = 0.27; double dumpLiftCarryPos = 0.21;
-    private double dumpDumpPos = 0.11;
+    public static double armTravelDown_RightA = 0.86; public static double armTravelDown_LeftA= 0.12;//0.505, 0.515
+    private double dumpIntakePos= 0.40;
+    private double dumpCarryPos = 0.30;
+    double dumpLiftCarryPos = 0.27; // stay on outtake out to back stage
+    private double dumpDumpPos = 0.16;
 
     private double dumpIntakePosA= dumpIntakePos; //0.58;
-    private double dumpTravelPosA = dumpTravelPos; //0.50;
     private double dumpCarryPosA = dumpCarryPos; //0.45;
     private double dumpDumpPos_auto = dumpDumpPos;
     // Hang
-    private double armHang_Right = 0.53; private double armHang_Left = 0.45;
-    private double dumpHangPos = 0.29;
+    private double armHang_Right = 0.5; private double armHang_Left = 0.48;
+    private double dumpHangPos = 0.30;
 
     //State Machine
     public int swingState;
@@ -114,6 +114,14 @@ public class Outtake implements Subsystem{
     }
     public void toIntakePos(){
         Log.v("StateMach", "toIntakePos() called");
+        //swingState = 10;
+        //swingStartTime = System.currentTimeMillis();
+        armToIntakePos();
+        dumperToIntakePos();
+    }
+
+    public void downToIntakePos(){
+        Log.v("StateMach", "toIntakePos() called");
         swingState = 10;
         swingStartTime = System.currentTimeMillis();
         //armToTravelPos();
@@ -136,7 +144,13 @@ public class Outtake implements Subsystem{
     public void prepOuttakeAuto(){
         liftState = 21;
         liftStartTime = System.currentTimeMillis();
+        lift.goToLevel(1);
         Log.v("StateMach", "prepOuttakeAuto() called");
+    }
+    public void armToIntakePos(){
+        armServo_Right.setPosition(armIntake_Right);
+        armServo_Left.setPosition(armIntake_Left);
+        Log.v("StateMach", "armToIntakePos() called");
     }
     public void armToTravelPos(){
         armServo_Right.setPosition(armTravel_Right);
@@ -155,18 +169,9 @@ public class Outtake implements Subsystem{
     }
 
     public void armToBackdropPosA(){
-        armServo_Right.setPosition(armTravel_Right-0.07);
-        armServo_Left.setPosition(armTravel_Left+0.07);
+        armServo_Right.setPosition(armDump_Right - 0.05);
+        armServo_Left.setPosition(armDump_Left + 0.05);
         Log.v("StateMach", "armToBackdropPosA() called");
-    }
-
-    public void dumperToTravelPos() {
-        dumpServo.setPosition(dumpTravelPos);
-        Log.v("StateMach", "dumperToTravelPos() called");
-    }
-    public void dumperToTravelPosAuto() {
-        dumpServo.setPosition(dumpTravelPosA);
-        Log.v("StateMach", "dumperToTravelPos() called");
     }
     public void dumperToIntakePos() {
         dumpServo.setPosition(dumpIntakePos);
@@ -187,18 +192,19 @@ public class Outtake implements Subsystem{
     public void toDumpPos(){
         swingState = 1;
         swingStartTime = System.currentTimeMillis();
-        Log.v("StateMach", "toDunpPos() called: swing start");
-        armServo_Right.setPosition(armDump_Right);
-        armServo_Left.setPosition(armDump_Left);
+        Log.v("StateMach", "toDumpPos() called: swing start");
+        armToBackdropPos();
+        //armServo_Right.setPosition(armDump_Right);
+        //armServo_Left.setPosition(armDump_Left);
     }
 
-    public void low_toDumpPos(){
+    public void toDumpPosA(){
         swingState = 1;
         swingStartTime = System.currentTimeMillis();
-        Log.v("StateMach", "toDunpPos() called: swing start");
+        Log.v("StateMach", "toDumpPos() called: swing start");
         armToBackdropPosA();
-        //armServo_Right.setPosition(armDumpLow_Right);
-        //armServo_Left.setPosition(armDumpLow_Left);
+        //armServo_Right.setPosition(armDump_Right);
+        //armServo_Left.setPosition(armDump_Left);
     }
 
     public void dropPixelPos(){
@@ -328,8 +334,6 @@ public class Outtake implements Subsystem{
             if(liftDelayDone(time)){
                 liftState = 2;
                 dumpServo.setPosition(dumpCarryPos);
-                //this.armToBackdropPos();
-                //this.dumperToTravelPos();
                 Log.v("StateMach", "dumper move to carry pos, liftState 1 " + (time - liftStartTime));
                 tempStartTime = System.currentTimeMillis();
                 //lift.goToLevel(1);  //go to the level where dumper is above intake
@@ -359,7 +363,7 @@ public class Outtake implements Subsystem{
             if(liftDelayDone(time)){
                 liftState = 22;
                 this.armToTravelPos();
-                this.dumperToTravelPosAuto();
+                this.dumperToIntakePos();
                 Log.v("StateMach", "lift moving to travelPos, liftState 21 " + (time - liftStartTime));
                 tempStartTime = System.currentTimeMillis();
                 //lift.goToLevel(1);  //go to the level where dumper is above intake
@@ -372,7 +376,7 @@ public class Outtake implements Subsystem{
             if(lift.armCanSwingAuto()){
                 Log.v("StateMach", "liftState = 0. Start toDumpPos");
                 liftState=0;
-                this.low_toDumpPos();
+                this.armToBackdropPosA();
                 this.setDumpServoPos(dumpCarryPosA);
             }
         }

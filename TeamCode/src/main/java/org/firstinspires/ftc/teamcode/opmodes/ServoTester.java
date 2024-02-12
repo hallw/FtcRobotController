@@ -83,7 +83,7 @@ public class ServoTester extends LinearOpMode {
                 robot.outtake.dropPixelPos();
             } if(gamepad1.y) {
                 robot.outtake.armToTravelPos();
-                robot.outtake.dumperToTravelPos();
+                robot.outtake.dumperToIntakePos();
                 //robot.outtake.toTravelPos();
             }
 
