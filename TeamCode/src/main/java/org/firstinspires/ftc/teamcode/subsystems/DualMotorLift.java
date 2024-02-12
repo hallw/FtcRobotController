@@ -28,6 +28,8 @@ public class DualMotorLift implements Subsystem {
     private final int HEIGHT_DIFF_TOLERANCE = inchToTicks(0.2); //(int) (0.3*TICKS_PER_REV / (PULLEY_DIAMETER * Math.PI));
     private Telemetry telemetry;
     private boolean targetReached = true;
+    public final double RIGHT_TO_LEFT_SYNC = 1;
+    private final int MAX_HT_TICKS = 3150;
     private final double FAST_POWER = 0.6;
     private final double SLOW_POWER = 0.3;
     private VoltageSensor batteryVoltageSensor;
@@ -52,7 +54,9 @@ public class DualMotorLift implements Subsystem {
     public static double kV = 0.0;
     public static double kS = 0.002;
     public static double PID_RANGE = 0.9;
-    public static double SLIDE_HOLD_POWER = 0.08;
+    public static double SLIDE_HOLD_POWER = 0.03;
+    public static double MIN_HOLD_POWER_UP = 0.09;
+    public static double MIN_HOLD_POWER_DOWN = -0.04;
     private double powerFromPIDF;
 
 
@@ -89,6 +93,40 @@ public class DualMotorLift implements Subsystem {
         //Log.v("PIDLift: status: ", "init");
     }
 
+    public double mapPower(double power){
+        if(Math.abs(power) < 10e-6){
+            return 0;
+        } else if (power > 0 && power <= MIN_HOLD_POWER_UP) {
+            return MIN_HOLD_POWER_UP;
+        } else if (power < 0 && power >= MIN_HOLD_POWER_DOWN) {
+            return MIN_HOLD_POWER_DOWN ;
+        }
+        if(slideMotorR.getCurrentPosition()>=MAX_HT_TICKS || slideMotorR.getCurrentPosition()>=MAX_HT_TICKS){
+            if (power > 0 ) {
+                return MIN_HOLD_POWER_UP;
+            } else if (power < 0 ) {
+                return MIN_HOLD_POWER_DOWN ;
+            }
+        }
+        return power;
+    }
+    public double getLeftFactor(){
+        double factor = 1.0;
+        int rightEncoder = slideMotorR.getCurrentPosition();
+        int leftEncoder = slideMotorL.getCurrentPosition();
+        if( rightEncoder!=0 && leftEncoder!=rightEncoder){
+            Log.v("SlideSync", "error exists: R="+rightEncoder + " L="+leftEncoder);
+            factor = 1.0 + ((double)(rightEncoder * 0.95)- leftEncoder)/800;
+            if(factor>1.5){
+                factor=1.5;
+            } else if (factor<0.5){
+                factor = 0.5;
+            }
+        }
+        Log.v("SlideSync", ""+factor);
+        return factor;
+
+    }
     public void goToLevel(int level){
         //4 levels: 0 ground, 1 low, 2 middle, 3 high, 4 (minimum height for free chain bar movement)
         int targetPosition = inchToTicks(LEVEL_HT[level]);
@@ -98,6 +136,7 @@ public class DualMotorLift implements Subsystem {
     }
     //for going to non-junction heights
     public void goToHt(int ticks) {
+        ticks = Math.min(MAX_HT_TICKS, ticks);
         targetReached=false;
         if(mode==Mode.RIGHT_FOLLOW_LEFT) {
             slideMotorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -105,7 +144,7 @@ public class DualMotorLift implements Subsystem {
             slideMotorR.setVelocity(UP_VELOCITY);
             //fine tune velocity?
             //In case if i should set right motor right when i set left motor (prob not useful)
-            slideMotorL.setVelocity(UP_VELOCITY);
+            slideMotorL.setVelocity(UP_VELOCITY*RIGHT_TO_LEFT_SYNC);
         }
         else {
             pidfController.reset();
@@ -135,8 +174,10 @@ public class DualMotorLift implements Subsystem {
             slideMotorR.setPower(power*direction);
         }
         else{
-            slideMotorR.setPower(power*direction);
-            slideMotorL.setPower(power*direction);
+            slideMotorR.setPower(mapPower(power*direction));
+            slideMotorL.setPower(mapPower(power*direction) * getLeftFactor());
+            Log.v("SlideSync", "R power=" +mapPower(power*direction));
+            Log.v("SlideSync", "L power=" +mapPower(power*direction)* getLeftFactor());
         }
         //Log.v("PIDLift: status: ", "applyStaticOffset");
     }
@@ -153,19 +194,12 @@ public class DualMotorLift implements Subsystem {
         }
         else{
             powerFromPIDF = power * direction;
-            if (powerFromPIDF < PID_RANGE-SLIDE_HOLD_POWER) {
-                powerFromPIDF += SLIDE_HOLD_POWER;
-            } else if (powerFromPIDF < PID_RANGE) {
-                powerFromPIDF = PID_RANGE;
-            }
+            powerFromPIDF = mapPower(powerFromPIDF);
             slideMotorR.setPower(powerFromPIDF);
-            slideMotorL.setPower(powerFromPIDF);
+            slideMotorL.setPower(powerFromPIDF*getLeftFactor());
+            Log.v("SlideSync", "R power="+powerFromPIDF);
+            Log.v("SlideSync", "L power="+powerFromPIDF* getLeftFactor());
         }
-        //Log.v("PIDLift: status: ", "adjust lift");
-        //for using run-using-encoder mode
-        //int current = slideMotorL.getCurrentPosition();
-        // int targetPosition = current + inchToTicks(1)*direction;
-        //slideMotorL.setTargetPosition(targetPosition);
     }
 
     public void stopMotor(){
@@ -225,6 +259,13 @@ public class DualMotorLift implements Subsystem {
         return slideMotorR.getCurrentPosition() / (TICKS_PER_REV/(PULLEY_DIAMETER_IN * Math.PI));
     }
 
+    public double getLeftEncoder(){
+        return slideMotorL.getCurrentPosition();
+    }
+    public double getRightEncoder(){
+        return slideMotorR.getCurrentPosition();
+    }
+
     public void resetEncoder(){
         slideMotorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -256,7 +297,7 @@ public class DualMotorLift implements Subsystem {
         updateTargetReached();
         if(mode==Mode.RIGHT_FOLLOW_LEFT) {
             double velocity = slideMotorR.getVelocity();
-            slideMotorL.setVelocity(velocity);
+            slideMotorL.setVelocity(velocity*RIGHT_TO_LEFT_SYNC);
         }//if target is reached and not in manual mode, set velocity of right motor to 0
         else{
             if (!isLevelReached()) {
@@ -274,7 +315,8 @@ public class DualMotorLift implements Subsystem {
                 //telemetry.addData("Measur pos", measuredPosition);
                 //telemetry.addData("slidePower", powerFromPIDF);
                 //telemetry.update();
-                slideMotorL.setPower(powerFromPIDF);
+                powerFromPIDF = mapPower(powerFromPIDF);
+                slideMotorL.setPower(powerFromPIDF*getLeftFactor());
                 slideMotorR.setPower(powerFromPIDF);
 
             }

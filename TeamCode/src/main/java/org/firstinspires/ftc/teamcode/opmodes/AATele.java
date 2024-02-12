@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import android.util.Log;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.RobotDistanceSensor;
 import org.firstinspires.ftc.teamcode.subsystems.SmartGamepad;
 
 @TeleOp
+@Config
 public class AATele extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -44,6 +47,7 @@ public class AATele extends LinearOpMode {
 
         while (!isStopRequested()) {
             telemetry.update();
+            TelemetryPacket packet = new TelemetryPacket();
             robot.update();
 
             boolean slowMode = gamepad1.left_bumper;
@@ -178,6 +182,8 @@ public class AATele extends LinearOpMode {
             //Log.v("arm", "right servo position: "+ robot.outtake.getRightServoPos());
             telemetry.addData("DistR: ",distanceSensor.distanceRight());
             telemetry.addData("DistL: ",distanceSensor.distanceLeft());
+            packet.put("Left SlideEncoder", robot.outtake.lift.getLeftEncoder());
+            packet.put("Right SlideEncoder", robot.outtake.lift.getRightEncoder());
             double currentTime = clock.seconds();
             //telemetry.addData("Update time: ", currentTime - prevTime);
             prevTime = currentTime;
