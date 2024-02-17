@@ -24,7 +24,7 @@ public class RedFar extends LinearOpMode {
     public static boolean IS_RED = true;     // IS_RED side?
     public static boolean ALIGN_RIGHT = false; // Align 1 inch from tile right side
     public static double drivePwr = 0.2;
-    public static double hCoeff = 5;
+    public static double hCoeff = 1;
     public static double park_y = -85;
 
     @Override
@@ -84,10 +84,10 @@ public class RedFar extends LinearOpMode {
                             .build()
             ));
             //Log.v("AUTODEBUG", "4: dump yellow");
-            //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(outPrep);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "5: park");
             // Park
             if(parkCenter){
@@ -123,10 +123,10 @@ public class RedFar extends LinearOpMode {
                             .splineTo(new Vector2d(22, park_y), Math.toRadians(-90))
                             .build()
             ));
-            //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(outPrep);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -167,10 +167,10 @@ public class RedFar extends LinearOpMode {
                             .build()
             ));
             //Log.v("AUTODEBUG", "4: dump yellow");
-            //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(outPrep);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "5: park");
             // Park
             if(parkCenter){

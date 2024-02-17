@@ -25,17 +25,18 @@ public class Outtake implements Subsystem{
     //private double armTravel_Right = 0.51263; private double armTravel_Left= 0.505265;//0.51263, 0.505265
     //Arm right+/left- is to go back
     public static double armTravel_Right = 0.42; public static double armTravel_Left= 0.56;
-    private double armDump_Right = 0.88; private double armDump_Left = 0.10;
+    private double armDump_Right = 0.88; private double armDump_Left = 0.10; //right + to dump, left - to dump
 
+    private double armDump_RightA = 0.74; private double armDump_LeftA = 0.24;
     public static double armIntake_RightA = armIntake_Right; public static double armIntake_LeftA = armIntake_Left;
     public static double armTravelDown_RightA = 0.86; public static double armTravelDown_LeftA= 0.12;//0.505, 0.515
-    private double dumpIntakePos= 0.40;
+    private double dumpIntakePos= 0.40; // - to turn back
     private double dumpCarryPos = 0.30;
     double dumpLiftCarryPos = 0.27; // stay on outtake out to back stage
     private double dumpDumpPos = 0.16;
 
     private double dumpIntakePosA= dumpIntakePos; //0.58;
-    private double dumpCarryPosA = dumpCarryPos; //0.45;
+    private double dumpCarryPosA = dumpCarryPos - 0.05; //0.45;
     private double dumpDumpPos_auto = dumpDumpPos;
     // Hang
     private double armHang_Right = 0.5; private double armHang_Left = 0.48;
@@ -124,16 +125,12 @@ public class Outtake implements Subsystem{
         Log.v("StateMach", "toIntakePos() called");
         swingState = 10;
         swingStartTime = System.currentTimeMillis();
-        //armToTravelPos();
-        //dumperToIntakePos();
     }
 
     public void toIntakePosAuto(){
         Log.v("StateMach", "toIntakePos() called");
         swingState = 10; //20;
         swingStartTime = System.currentTimeMillis();
-        //armToTravelPos();
-        //dumperToIntakePos();
     }
     public void prepOuttake(){
         liftState = 1;
@@ -169,8 +166,8 @@ public class Outtake implements Subsystem{
     }
 
     public void armToBackdropPosA(){
-        armServo_Right.setPosition(armDump_Right - 0.05);
-        armServo_Left.setPosition(armDump_Left + 0.05);
+        armServo_Right.setPosition(armDump_RightA);
+        armServo_Left.setPosition(armDump_LeftA);
         Log.v("StateMach", "armToBackdropPosA() called");
     }
     public void dumperToIntakePos() {
@@ -194,8 +191,6 @@ public class Outtake implements Subsystem{
         swingStartTime = System.currentTimeMillis();
         Log.v("StateMach", "toDumpPos() called: swing start");
         armToBackdropPos();
-        //armServo_Right.setPosition(armDump_Right);
-        //armServo_Left.setPosition(armDump_Left);
     }
 
     public void toDumpPosA(){
@@ -203,8 +198,6 @@ public class Outtake implements Subsystem{
         swingStartTime = System.currentTimeMillis();
         Log.v("StateMach", "toDumpPos() called: swing start");
         armToBackdropPosA();
-        //armServo_Right.setPosition(armDump_Right);
-        //armServo_Left.setPosition(armDump_Left);
     }
 
     public void dropPixelPos(){

@@ -39,7 +39,7 @@ public class BlueNear extends LinearOpMode {
     public static double PARK_X_CENTER = 53;
     public static double PARK_Y = 40;
     public static double drivePwr = 0.2;
-    public static double hCoeff = 5;
+    public static double hCoeff = 1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -90,12 +90,13 @@ public class BlueNear extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
                             .lineTo(new Vector2d(20, PARK_Y))
+                            .addTemporalMarker(0.5, () -> robot.runCommands(outPrep))
                             .build()
             ));
             //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "10: dump done");
 
             // Park
@@ -127,14 +128,14 @@ public class BlueNear extends LinearOpMode {
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
-                            //.splineTo(new Vector2d(24, 35), FACE_BACKDROP_HEADERING)
                             .lineTo(new Vector2d(25, PARK_Y)) //24 previous
+                            .addTemporalMarker(0.5, () -> robot.runCommands(outPrep))
                             .build()
             ));
             //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             // Park
             if(!parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -164,14 +165,14 @@ public class BlueNear extends LinearOpMode {
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
-                            //.splineTo(new Vector2d(32, PARK_Y), FACE_BACKDROP_HEADERING)
                             .lineTo(new Vector2d(32, PARK_Y))
+                            .addTemporalMarker(0.5, () -> robot.runCommands(outPrep))
                             .build()
             ));
             //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             // Park
             if(!parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -191,3 +192,4 @@ public class BlueNear extends LinearOpMode {
 
     }
 }
+

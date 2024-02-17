@@ -25,7 +25,7 @@ public class BlueFar extends LinearOpMode {
     public static boolean ALIGN_RIGHT = true; // Align 1 inch from tile right side
 
     public static double drivePwr = 0.2;
-    public static double hCoeff = 5;
+    public static double hCoeff = 1;
     public static double park_y = 85;
 
 
@@ -86,10 +86,10 @@ public class BlueFar extends LinearOpMode {
                             .build()
             ));
 
-            //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(outPrep);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
 
             //Log.v("AUTODEBUG", "4: dump yellow");
             //dump yellow pixel
@@ -129,10 +129,10 @@ public class BlueFar extends LinearOpMode {
                             .build()
             ));
 
-            //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(outPrep);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
@@ -172,10 +172,10 @@ public class BlueFar extends LinearOpMode {
             ));
             //Log.v("AUTODEBUG", "4: dump yellow");
             //dump yellow pixel
-            //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(outPrep);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(

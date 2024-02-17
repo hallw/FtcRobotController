@@ -109,23 +109,23 @@ public class alignBackdrop implements Command {
 
         // Heading PID
         double measuredHeading = Math.asin(Math.abs(dsR-dsL)/SENSOR_DIST);
-        //Log.v("Align", "measuredHeading " + measuredHeading);
+        Log.v("Align", "measuredHeading " + measuredHeading);
         int headingSign = (dsL > dsR) ? -1 : 1;
-        //Log.v("Align", "headingSign " + headingSign);
+        Log.v("Align", "headingSign " + headingSign);
         powerFromHeadingPID = Math.abs(headingPID.update(measuredHeading));
-        //Log.v("Align", "powerFromHeadingPIO "+ powerFromHeadingPID);
+        Log.v("Align", "powerFromHeadingPIO "+ powerFromHeadingPID);
         powerFromHeadingPID *= hcoef;
-        //Log.v("Align", "powerFromHeadingPID after scaling "+ powerFromHeadingPID);
-        //Log.v("Align", "heading Pwr "+ powerFromHeadingPID*headingSign);
+        Log.v("Align", "powerFromHeadingPID after scaling "+ powerFromHeadingPID);
+        Log.v("Align", "heading Pwr "+ powerFromHeadingPID*headingSign);
         //telemetry.update();
 
         if(Math.abs(measuredPosition - targetDis) <= DIST_TOL
                 && measuredHeading <= Math.toRadians(HEAD_TOL)){
             isReached = true;
-            //Log.v("Align","Completed");
+            Log.v("Align","Completed");
         } else {
             mecanumDrive.setDrivePower(new Pose2d(powerFromPIDF, 0, powerFromHeadingPID*headingSign));
-            //Log.v("Align","Aligning" + powerFromHeadingPID + " " + powerFromPIDF);
+            Log.v("Align","Aligning" + powerFromHeadingPID + " " + powerFromPIDF);
         }
 
 

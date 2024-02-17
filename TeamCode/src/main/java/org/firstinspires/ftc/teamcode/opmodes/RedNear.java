@@ -26,7 +26,7 @@ public class RedNear extends LinearOpMode {
     public static double POS1_SPL1_X = 25;
     public static double POS1_SPL1_Y = -5;
     public static double POS1_DUMP_X = 32;
-    public static double DUMP_Y = -35;
+    public static double DUMP_Y = -32;
 
     public static double POS2_SPL1_X = 37;
     public static double POS2_SPL1_Y = -15;
@@ -39,7 +39,7 @@ public class RedNear extends LinearOpMode {
     public static double TAG_DIST = 6;
     public static double PARK_FORWARD = 10.0;
     public static double drivePwr = 0.2;
-    public static double hCoeff = 5;
+    public static double hCoeff = 1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -90,21 +90,21 @@ public class RedNear extends LinearOpMode {
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
-                            //.splineTo(new Vector2d(POS1_DUMP_X, DUMP_Y), FACE_BACKDROP_HEADERING)
                             .lineTo(new Vector2d(POS1_DUMP_X, DUMP_Y))
+                            .addTemporalMarker(0.5, () -> robot.runCommands(outPrep))
                             .build()
             ));
             //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             //Log.v("AUTODEBUG", "10: dump done");
 
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-10))
+                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-2))
                                 //.forward(PARK_FORWARD)
                                 .build()
                 ));
@@ -112,7 +112,7 @@ public class RedNear extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-10))
+                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-2))
                                 //.forward(PARK_FORWARD)
                                 .build()
                 ));
@@ -130,19 +130,19 @@ public class RedNear extends LinearOpMode {
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
-                            //.splineTo(new Vector2d(24, -35), FACE_BACKDROP_HEADERING)
                             .lineTo(new Vector2d(23, DUMP_Y))
+                            .addTemporalMarker(0.5, () -> robot.runCommands(outPrep))
                             .build()
             ));
             //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-10))
+                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-2))
                                 //.forward(PARK_FORWARD)
                                 .build()
                 ));
@@ -150,8 +150,7 @@ public class RedNear extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-10))
-                                //.forward(PARK_FORWARD)
+                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-2))
                                 .build()
                 ));
             }
@@ -168,19 +167,19 @@ public class RedNear extends LinearOpMode {
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
-                            //.splineTo(new Vector2d(17, -35), FACE_BACKDROP_HEADERING)
                             .lineTo(new Vector2d(18, DUMP_Y))
+                            .addTemporalMarker(0.5, () -> robot.runCommands(outPrep))
                             .build()
             ));
             //robot.runCommand(outPrep);
-            //robot.runCommand(alignCmd);
+            robot.runCommand(alignCmd);
             //dump yellow pixel
-            //robot.runCommand(outDump);
+            robot.runCommand(outDump);
             // Park
             if(parkCenter){
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-10))
+                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-2))
                                 //.forward(PARK_FORWARD)
                                 .build()
                 ));
@@ -188,7 +187,7 @@ public class RedNear extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-10))
+                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-2))
                                 //.forward(PARK_FORWARD)
                                 .build()
                 ));

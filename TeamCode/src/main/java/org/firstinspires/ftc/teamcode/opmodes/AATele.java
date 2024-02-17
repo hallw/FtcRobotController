@@ -96,7 +96,7 @@ public class AATele extends LinearOpMode {
             }
             if(smartGamepad1.dpad_up_pressed()){
                 if (!inAlignCmd) {
-                    alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, 0.2, 5,10, telemetry);
+                    alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, 0.2, 1,10, telemetry);
                     inAlignCmd = true;
                     Log.v("Align", "Align called");
 

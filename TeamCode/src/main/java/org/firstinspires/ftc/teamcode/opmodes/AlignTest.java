@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.util.Utilities;
 @Autonomous
 public class AlignTest extends LinearOpMode {
     public static double drivePwr = 0.2;
-    public static double hCoeff = 5;
+    public static double hCoeff = 2;
     @Override
     public void runOpMode() throws InterruptedException {
         Utilities.getSharedUtility().initialize(this);
@@ -37,9 +37,9 @@ public class AlignTest extends LinearOpMode {
         if (isStopRequested()) return;
 
         //Log.v("Align", "staring command" );
-        robot.runCommand(outPrep);
+        //robot.runCommand(outPrep);
         robot.runCommand(alignCmd);
-        robot.runCommand(outDump);
+        //robot.runCommand(outDump);
 
         Log.v("Align", "end command" );
     }
