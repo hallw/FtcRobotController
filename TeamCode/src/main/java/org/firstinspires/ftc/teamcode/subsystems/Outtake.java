@@ -31,8 +31,8 @@ public class Outtake implements Subsystem{
     public static double armIntake_RightA = armIntake_Right; public static double armIntake_LeftA = armIntake_Left;
     public static double armTravelDown_RightA = 0.86; public static double armTravelDown_LeftA= 0.12;//0.505, 0.515
     private double dumpIntakePos= 0.40; // - to turn back
-    private double dumpCarryPos = 0.30;
-    double dumpLiftCarryPos = 0.27; // stay on outtake out to back stage
+    private double dumpCarryPos = 0.3;
+    double dumpLiftCarryPos = 0.23; // stay on outtake out to back drop
     private double dumpDumpPos = 0.16;
 
     private double dumpIntakePosA= dumpIntakePos; //0.58;

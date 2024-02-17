@@ -302,15 +302,16 @@ public class DualMotorLift implements Subsystem {
         else{
             if (!isLevelReached()) {
                 // TODO: Update measuredPosition with the slideMotor which connects encoder
-                double measuredPosition = (double) ticksToInches(slideMotorL.getCurrentPosition());
-                powerFromPIDF = pidfController.update(measuredPosition);
+                double measuredPositionL = (double) ticksToInches(slideMotorL.getCurrentPosition());
+                double measuredPositionR = (double) ticksToInches(slideMotorR.getCurrentPosition());
+                powerFromPIDF = pidfController.update(measuredPositionL);
                 if (powerFromPIDF < PID_RANGE-SLIDE_HOLD_POWER) {
                     powerFromPIDF += SLIDE_HOLD_POWER;
                 } else if (powerFromPIDF < PID_RANGE) {
                     powerFromPIDF = PID_RANGE;
                 }
-                Log.v("PIDLift: Debug: ", String.format("Target pos: %4.2f, current pos: %4.2f, last error: %4.2f, velocity: %4.2f, set power to: %4.2f",
-                       pidfController.getTargetPosition(), measuredPosition, pidfController.getLastError(), slideMotorL.getVelocity(), powerFromPIDF));
+                Log.v("PIDLift", String.format("Target pos: %4.2f, current left pos: %4.2f, current right pos: %4.2f, last error: %4.2f, velocity: %4.2f, set power to: %4.2f",
+                       pidfController.getTargetPosition(), measuredPositionL, measuredPositionR, pidfController.getLastError(), slideMotorL.getVelocity(), powerFromPIDF));
                 //telemetry.addData("Target pos", pidfController.getTargetPosition());
                 //telemetry.addData("Measur pos", measuredPosition);
                 //telemetry.addData("slidePower", powerFromPIDF);

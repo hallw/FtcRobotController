@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystems;
+import android.hardware.Sensor;
 import android.util.Log;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
@@ -16,15 +20,16 @@ public class Intake implements Subsystem {
     private DcMotorEx intakeMotor;
     private double motorPosition = 0; private Servo intakeServoL;
     private Servo intakeServoR;
+    public DistanceSensor intakeTop; public DistanceSensor intakeBack;
     private double baseposl = 0.217;
     private double baseposr = 0.76715;
-    private double baseposl_yield = 0.5; //0.36 + 0.37;
-    private double baseposr_yield = 0.49; //0.615 - 0.37;
+    private double baseposl_yield = 0.7; //0.36 + 0.37;
+    private double baseposr_yield = 0.29; //0.615 - 0.37;
     private double outtakeposL = 0.804; //0.814 - 0.01; //0.804
     private double outtakeposR = 0.1503; //0.1403 + 0.01; //0.1503
     //placeholder outtake position, may change depending on outtake
-    private double intakeposL = 0.031; //0.129+0.037-0.135;
-    private double intakeposR = 0.9575; //0.8595-0.037+0.135;
+    private double intakeposL = 0.031+0.02; //0.129+0.037-0.135;
+    private double intakeposR = 0.9575-0.02; //0.8595-0.037+0.135;
     private double lowerlimitL = 0.814;
     private double lowerlimitR = 0.13;
     private double upperlimitL = 0.09;
@@ -45,7 +50,15 @@ public class Intake implements Subsystem {
         intakeMotor = robot.getMotor("intakeMotor");
         intakeServoL = robot.getServo("intakeServoL");
         intakeServoR = robot.getServo("intakeServoR");
+        intakeTop = robot.hardwareMap.get(DistanceSensor.class, "intakeTop");
+        intakeBack = robot.hardwareMap.get(DistanceSensor.class,"intakeBack");
         toBasePos();
+    }
+    public double getTopReading(){
+        return intakeTop.getDistance(DistanceUnit.CM);
+    }
+    public double getBottomReading(){
+        return intakeBack.getDistance(DistanceUnit.CM);
     }
     public void reset(){
         intakeServoL.setPosition(baseposl);
@@ -164,6 +177,7 @@ public class Intake implements Subsystem {
                 intakeMotor.setPower(0);
                 toBasePosYield();
             }
+
         } else if (intakeState == 40) {
             intakeServoL.setPosition(LPos);
         } else if (intakeState == 41) {

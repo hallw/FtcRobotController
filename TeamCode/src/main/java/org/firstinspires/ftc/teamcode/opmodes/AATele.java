@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commands.alignBackdrop;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 import org.firstinspires.ftc.teamcode.subsystems.CrabRobot;
@@ -79,6 +80,7 @@ public class AATele extends LinearOpMode {
             }
 
             // INTAKE
+            /*
             if(smartGamepad1.a_pressed()){
                 if(intakePosition == 0 && robot.intake.intakeState == 0) {
                     robot.intake.setIntakeState(1);
@@ -87,6 +89,17 @@ public class AATele extends LinearOpMode {
                     robot.intake.setIntakeState(2);
                     intakePosition=0;
                 }
+            }
+            */
+            if(smartGamepad1.a_pressed()){
+                if(intakePosition == 0 && robot.intake.intakeState == 0) {
+                    robot.intake.setIntakeState(1);
+                    intakePosition=1;
+                }
+            }
+            if(robot.intake.intakeTop.getDistance(DistanceUnit.CM) <7.5){
+                robot.intake.setIntakeState(2);
+                intakePosition = 0;
             }
             if(smartGamepad1.b_pressed()){
                 robot.intake.toBasePos();
@@ -182,6 +195,8 @@ public class AATele extends LinearOpMode {
             //Log.v("arm", "right servo position: "+ robot.outtake.getRightServoPos());
             telemetry.addData("DistR: ",distanceSensor.distanceRight());
             telemetry.addData("DistL: ",distanceSensor.distanceLeft());
+            telemetry.addData("intakeTop: ", robot.intake.intakeTop.getDistance(DistanceUnit.CM));
+            telemetry.addData("intakeBack: ", robot.intake.intakeBack.getDistance(DistanceUnit.CM));
             packet.put("Left SlideEncoder", robot.outtake.lift.getLeftEncoder());
             packet.put("Right SlideEncoder", robot.outtake.lift.getRightEncoder());
             double currentTime = clock.seconds();
