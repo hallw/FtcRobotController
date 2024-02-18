@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commands.alignBackdrop;
@@ -37,6 +38,7 @@ public class AATele extends LinearOpMode {
         SmartGamepad smartGamepad1 = robot.smartGamepad1;
         SmartGamepad smartGamepad2 = robot.smartGamepad2;
         RobotDistanceSensor distanceSensor = robot.ds;
+        TouchSensor sensor = hardwareMap.get(TouchSensor.class, "touchSensor");
 
         NanoClock clock = NanoClock.system();
         double prevTime = clock.seconds();
@@ -80,27 +82,17 @@ public class AATele extends LinearOpMode {
             }
 
             // INTAKE
-            /*
+
             if(smartGamepad1.a_pressed()){
                 if(intakePosition == 0 && robot.intake.intakeState == 0) {
                     robot.intake.setIntakeState(1);
                     intakePosition=1;
-                } else if (intakePosition == 1 && robot.intake.intakeState == 1){
+                } else if ((intakePosition == 1 && robot.intake.intakeState == 1) || robot.intake.intakeTop.getDistance(DistanceUnit.CM) <7.5){
                     robot.intake.setIntakeState(2);
                     intakePosition=0;
                 }
             }
-            */
-            if(smartGamepad1.a_pressed()){
-                if(intakePosition == 0 && robot.intake.intakeState == 0) {
-                    robot.intake.setIntakeState(1);
-                    intakePosition=1;
-                }
-            }
-            if(robot.intake.intakeTop.getDistance(DistanceUnit.CM) <7.5){
-                robot.intake.setIntakeState(2);
-                intakePosition = 0;
-            }
+
             if(smartGamepad1.b_pressed()){
                 robot.intake.toBasePos();
             }
@@ -167,7 +159,7 @@ public class AATele extends LinearOpMode {
             if(smartGamepad2.right_stick_button){
                     robot.outtake.prepHang();
             }
-            if(smartGamepad2.leftJoystickButton()){
+            if(smartGamepad2.leftJoystickButton() || sensor.isPressed()){
                 robot.outtake.lift.resetEncoder();
             }
 
@@ -197,8 +189,10 @@ public class AATele extends LinearOpMode {
             telemetry.addData("DistL: ",distanceSensor.distanceLeft());
             telemetry.addData("intakeTop: ", robot.intake.intakeTop.getDistance(DistanceUnit.CM));
             telemetry.addData("intakeBack: ", robot.intake.intakeBack.getDistance(DistanceUnit.CM));
-            packet.put("Left SlideEncoder", robot.outtake.lift.getLeftEncoder());
-            packet.put("Right SlideEncoder", robot.outtake.lift.getRightEncoder());
+            telemetry.addData("Left Slide Encoder", robot.outtake.lift.getLeftEncoder());
+            telemetry.addData("Right Slide Encoder", robot.outtake.lift.getRightEncoder());
+            packet.put("Left Slide Encoder", robot.outtake.lift.getLeftEncoder());
+            packet.put("Right Slide Encoder", robot.outtake.lift.getRightEncoder());
             double currentTime = clock.seconds();
             //telemetry.addData("Update time: ", currentTime - prevTime);
             prevTime = currentTime;
