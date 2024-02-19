@@ -33,7 +33,7 @@ public class Outtake implements Subsystem{
     private double dumpIntakePos= 0.40; // - to turn back
     private double dumpCarryPos = 0.3;
     double dumpLiftCarryPos = 0.23; // stay on outtake out to back drop
-    private double dumpDumpPos = 0.16;
+    private double dumpDumpPos = 0.13;
 
     private double dumpIntakePosA= dumpIntakePos; //0.58;
     private double dumpCarryPosA = dumpCarryPos - 0.05; //0.45;

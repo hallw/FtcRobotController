@@ -46,6 +46,7 @@ public class AATele extends LinearOpMode {
         double intakeStartTime = 0;
 
         boolean inAlignCmd = false;
+        boolean stopAlign = false;
 
 
         while (!isStopRequested()) {
@@ -59,7 +60,7 @@ public class AATele extends LinearOpMode {
             double jsX = robot.mecanumDrive.mapJsComponents(-gamepad1.left_stick_x, joystickRadius, slowMode);
             double jsY = robot.mecanumDrive.mapJsComponents(gamepad1.left_stick_y, joystickRadius, slowMode);
 
-            if(!inAlignCmd) {
+            if(!inAlignCmd || stopAlign) {
                 robot.mecanumDrive.setDrivePower(new Pose2d(-jsY, -jsX, -(0.8) * gamepad1.right_stick_x));
                 robot.mecanumDrive.setPowerFactor(0.7); //remove with actual robot.
             }
@@ -87,10 +88,11 @@ public class AATele extends LinearOpMode {
                 if(intakePosition == 0 && robot.intake.intakeState == 0) {
                     robot.intake.setIntakeState(1);
                     intakePosition=1;
-                } else if ((intakePosition == 1 && robot.intake.intakeState == 1) || robot.intake.intakeTop.getDistance(DistanceUnit.CM) <7.5){
-                    robot.intake.setIntakeState(2);
-                    intakePosition=0;
                 }
+            }
+           else if ((intakePosition == 1 && robot.intake.intakeState == 1) && robot.intake.intakeTop.getDistance(DistanceUnit.CM) <7.5){
+                robot.intake.setIntakeState(2);
+                intakePosition=0;
             }
 
             if(smartGamepad1.b_pressed()){
@@ -101,19 +103,21 @@ public class AATele extends LinearOpMode {
             }
             if(smartGamepad1.dpad_up_pressed()){
                 if (!inAlignCmd) {
-                    alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, 0.2, 1,10, telemetry);
+                    alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, 0.2, 1,9, telemetry);
                     inAlignCmd = true;
                     Log.v("Align", "Align called");
 
                     robot.runCommand(alignCmd);
-                } else {
+                } else if(inAlignCmd) {
                     Log.v("Align", "Exit AlignCmd");
                     telemetry.addLine("Exit Align");
                     inAlignCmd = false;
                 }
-
             }
             telemetry.addData("inAlignCmd", inAlignCmd);
+            if(smartGamepad1.dpad_down_pressed()){
+                stopAlign = !stopAlign;
+            }
 
 
             // Outtake automated
