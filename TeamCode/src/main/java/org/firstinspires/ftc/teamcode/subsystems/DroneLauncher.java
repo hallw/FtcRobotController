@@ -11,7 +11,7 @@ public class DroneLauncher implements Subsystem {
     private Servo droneTrigger;
     Telemetry telemetry;
     private double holdPos = 0.5;
-    private double releasePos = 0.95;//0.1
+    private double releasePos = 0;//0.1
 
     public DroneLauncher(Robot robot, Telemetry telemetry) {
         this.telemetry = telemetry;

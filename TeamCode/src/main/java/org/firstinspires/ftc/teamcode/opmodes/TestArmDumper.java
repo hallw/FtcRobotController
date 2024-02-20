@@ -13,12 +13,12 @@ import org.firstinspires.ftc.teamcode.subsystems.SmartGamepad;
 @Config
 @TeleOp
 public class TestArmDumper extends LinearOpMode {
-    public static double dumperPos = 0.35;  // - to turn backwards
+    public static double dumperPos = 0.38;  // - to turn backwards
     public static double dumperPosStep = 0.01;
     public static int slideHt = 0;
     public static int slideHtStep = 1;
-    public static double armLeftIntake = 0.54; //+ to move back
-    public static double armRightIntake = 0.44; // - to move back
+    public static double armLeftIntake = 0.43; //+ to move back
+    public static double armRightIntake = 0.56; // - to move back
     public static double intakeServoLeftPos = 0.36 + 0.37;
     public static double intakeServoRightPos = 0.615 - 0.37;
     public static double armStep = 0.01;
@@ -95,8 +95,8 @@ public class TestArmDumper extends LinearOpMode {
                 slideHt -= slideHtStep;
             }
             //Arms
-            telemetry.addData("Arm Left ", armLeftIntake);
-            telemetry.addData("Arm Right ", armRightIntake);
+            telemetry.addData("Arm Left ", robot.outtake.armServo_Left.getPosition());
+            telemetry.addData("Arm Right ", robot.outtake.armServo_Right.getPosition());
             if(smartGamepad2.x_pressed()){
                 robot.outtake.armServo_Left.setPosition(armLeftIntake);
                 robot.outtake.armServo_Right.setPosition(armRightIntake);
@@ -124,6 +124,7 @@ public class TestArmDumper extends LinearOpMode {
 
             telemetry.addData("DistR: ",distanceSensor.distanceRight());
             telemetry.addData("DistL: ",distanceSensor.distanceLeft());
+            telemetry.addData("Dumper: ",robot.outtake.getDumperPos());
             double currentTime = clock.seconds();
             //telemetry.addData("Update time: ", currentTime - prevTime);
             prevTime = currentTime;
