@@ -43,7 +43,7 @@ public class autoOutDump implements Command {
     @Override
     public void update() {
         if (state == 1) {
-            if (System.currentTimeMillis() - time > 1000) { // drop pixel time
+            if (System.currentTimeMillis() - time > 1100) { // drop pixel time
                 mecanumDrive.setDrivePower(new Pose2d(-0.1, 0, 0)); // back a little
                 time = System.currentTimeMillis();
                 state = 2;

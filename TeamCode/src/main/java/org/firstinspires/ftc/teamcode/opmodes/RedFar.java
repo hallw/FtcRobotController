@@ -104,7 +104,7 @@ public class RedFar extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(0, park_y-10))
+                                .lineTo(new Vector2d(5, park_y-10))
                                 .build()
                 ));
             }
@@ -112,7 +112,7 @@ public class RedFar extends LinearOpMode {
         } else if (elementPos == 2) { //middle
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
-                            .splineTo(new Vector2d(21, 2), Math.toRadians(-180))
+                            .splineTo(new Vector2d(21, 4), Math.toRadians(-180))
                             .build()
             ));
             //dump purple pixel
@@ -127,7 +127,7 @@ public class RedFar extends LinearOpMode {
             ));
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                            .splineTo(new Vector2d(25, park_y), Math.toRadians(-90))
+                            .splineTo(new Vector2d(29, park_y), Math.toRadians(-90))
                             .addTemporalMarker(0.2, () -> robot.runCommands(outPrep))
                             .build()
             ));
@@ -146,7 +146,7 @@ public class RedFar extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(0, park_y-10))
+                                .lineTo(new Vector2d(5, park_y-10))
                                 .build()
                 ));
             }
@@ -155,7 +155,7 @@ public class RedFar extends LinearOpMode {
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
-                            .splineTo(new Vector2d(26, 7), Math.toRadians(90))
+                            .splineTo(new Vector2d(25, 7), Math.toRadians(90))
                             .back(5)
                             .build()
             ));
@@ -174,7 +174,7 @@ public class RedFar extends LinearOpMode {
             ));
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                            .splineTo(new Vector2d(20, park_y), Math.toRadians(-90)) // go to backdrop
+                            .splineTo(new Vector2d(22, park_y), Math.toRadians(-90)) // go to backdrop
                             .addTemporalMarker(0.2, () -> robot.runCommands(outPrep))
                             .build()
             ));
@@ -195,7 +195,7 @@ public class RedFar extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(0, park_y-10))
+                                .lineTo(new Vector2d(5, park_y-10))
                                 .build()
                 ));
             }

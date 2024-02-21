@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import android.util.Log;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -22,6 +23,9 @@ import org.firstinspires.ftc.teamcode.subsystems.SmartGamepad;
 @TeleOp
 @Config
 public class AATele extends LinearOpMode {
+    public static double LeftSideEncoder = 0;
+    public static double RightSideEncoder = 0;
+
     @Override
     public void runOpMode() throws InterruptedException {
         CrabRobot robot = new CrabRobot(this);
@@ -47,13 +51,13 @@ public class AATele extends LinearOpMode {
         double intakeStartTime = 0;
 
         boolean inAlignCmd = false;
-        boolean stopAlign = false;
 
 
         while (!isStopRequested()) {
             telemetry.update();
             TelemetryPacket packet = new TelemetryPacket();
             robot.update();
+            FtcDashboard dashboard = FtcDashboard.getInstance();
 
             boolean slowMode = gamepad1.left_bumper;
             double joystickRadius = Math.min(1,Math.sqrt(Math.pow(gamepad1.left_stick_y,2) + Math.pow(gamepad1.left_stick_x,2)));
@@ -61,7 +65,7 @@ public class AATele extends LinearOpMode {
             double jsX = robot.mecanumDrive.mapJsComponents(-gamepad1.left_stick_x, joystickRadius, slowMode);
             double jsY = robot.mecanumDrive.mapJsComponents(gamepad1.left_stick_y, joystickRadius, slowMode);
 
-            if(!inAlignCmd || stopAlign) {
+            if(!inAlignCmd) {
                 robot.mecanumDrive.setDrivePower(new Pose2d(-jsY, -jsX, -(0.8) * gamepad1.right_stick_x));
                 robot.mecanumDrive.setPowerFactor(0.7); //remove with actual robot.
             }
@@ -140,20 +144,18 @@ public class AATele extends LinearOpMode {
             if(smartGamepad1.dpad_up_pressed()){
                 if (!inAlignCmd) {
                     alignBackdrop alignCmd = new alignBackdrop(robot, drivetrain, 0.2, 1,9, telemetry);
+                    alignCmd.earlyExit = true;
                     inAlignCmd = true;
-                    Log.v("Align", "Align called");
+                    //Log.v("Align", "Align called");
 
                     robot.runCommand(alignCmd);
                 } else if(inAlignCmd) {
-                    Log.v("Align", "Exit AlignCmd");
+                    //Log.v("Align", "Exit AlignCmd");
                     telemetry.addLine("Exit Align");
                     inAlignCmd = false;
                 }
             }
             telemetry.addData("inAlignCmd", inAlignCmd);
-            if(smartGamepad1.dpad_down_pressed()){
-                stopAlign = !stopAlign;
-            }
 
 
             // Outtake automated
@@ -225,17 +227,18 @@ public class AATele extends LinearOpMode {
             //telemetry.addData("slide pos", robot.outtake.getLiftPos());
             //telemetry.addData("slide power", robot.outtake.getLiftPower());
             //Log.v("arm", "right servo position: "+ robot.outtake.getRightServoPos());
-            telemetry.addData("DistR: ",distanceSensor.distanceRight());
-            telemetry.addData("DistL: ",distanceSensor.distanceLeft());
-            telemetry.addData("intakeTop: ", robot.intake.intakeTop.getDistance(DistanceUnit.CM));
-            telemetry.addData("intakeBack: ", robot.intake.intakeBack.getDistance(DistanceUnit.CM));
-            telemetry.addData("Left Slide Encoder", robot.outtake.lift.getLeftEncoder());
-            telemetry.addData("Right Slide Encoder", robot.outtake.lift.getRightEncoder());
+            //telemetry.addData("DistR: ",distanceSensor.distanceRight());
+            //telemetry.addData("DistL: ",distanceSensor.distanceLeft());
+            //telemetry.addData("intakeTop: ", robot.intake.intakeTop.getDistance(DistanceUnit.CM));
+            //telemetry.addData("intakeBack: ", robot.intake.intakeBack.getDistance(DistanceUnit.CM));
+            //telemetry.addData("Left Slide Encoder", robot.outtake.lift.getLeftEncoder());
+            //telemetry.addData("Right Slide Encoder", robot.outtake.lift.getRightEncoder());
             packet.put("Left Slide Encoder", robot.outtake.lift.getLeftEncoder());
             packet.put("Right Slide Encoder", robot.outtake.lift.getRightEncoder());
             double currentTime = clock.seconds();
             //telemetry.addData("Update time: ", currentTime - prevTime);
             prevTime = currentTime;
+            dashboard.sendTelemetryPacket(packet);
             }
         }
     }

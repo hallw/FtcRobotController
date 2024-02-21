@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.SmartGamepad;
 @Config
 @TeleOp
 public class TestArmDumper extends LinearOpMode {
-    public static double dumperPos = 0.38;  // - to turn backwards
+    public static double dumperPos = 0.42;  // - to turn backwards
     public static double dumperPosStep = 0.01;
     public static int slideHt = 0;
     public static int slideHtStep = 1;

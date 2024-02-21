@@ -50,9 +50,11 @@ public class alignBackdrop implements Command {
     public static double HEADING_PID_RANGE = 0.9;
     double initialTimeStamp, intakeCompleteTime;
     double targetDis;
+    public boolean earlyExit = false;
 
     //public DriveTillIntake (CrabRobot robot, SimpleMecanumDrive drive, Pose2d power, double time){
-    public alignBackdrop(CrabRobot robot, DriveTrain drive, double distCoeff, double hCoef, double xDisp, Telemetry telemetry) {
+    public alignBackdrop(CrabRobot robot, DriveTrain drive, double distCoeff, double hCoef, double xDisp,Telemetry telemetry) {
+
         // PID related
         PIDCoefficients coefficients = new PIDCoefficients();
         coefficients.kP = kP;
@@ -140,7 +142,7 @@ public class alignBackdrop implements Command {
     public boolean isCompleted() {
 
         //return (disp >= driveDisp);
-        return isReached;
+        return (isReached||(this.earlyExit && robot.smartGamepad1.dpad_up_pressed()));
 
 
     }

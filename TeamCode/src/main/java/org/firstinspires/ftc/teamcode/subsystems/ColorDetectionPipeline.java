@@ -17,7 +17,7 @@ import java.util.ArrayList;
 @Config
 public class ColorDetectionPipeline extends OpenCvPipeline {
     public static double ALIGN_R_L_X_OFFSET = 115;
-    public static double ALIGN_R_L_Y_OFFSET = -12;
+    public static double ALIGN_R_L_Y_OFFSET = -20;
     public static double ALIGN_R_R_X_OFFSET = 30;
     public static double ALIGN_R_R_Y_OFFSET = 25;
 
