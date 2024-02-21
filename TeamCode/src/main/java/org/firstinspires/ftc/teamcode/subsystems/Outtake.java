@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Config
 public class Outtake implements Subsystem{
-    public static double HT_TO_SWING_AUTO = 8.0;
+    public static double HT_TO_SWING_AUTO = 9.0;
      //0.09;
     //Constants
     private double syncFactor=0.97;
@@ -36,8 +36,8 @@ public class Outtake implements Subsystem{
     private double dumpDumpPos = 0.18;
 
     private double dumpIntakePosA= dumpIntakePos; //0.58;
-    private double dumpCarryPosA = dumpCarryPos - 0.05; //0.45;
-    private double dumpDumpPos_auto = dumpDumpPos;
+    private double dumpCarryPosA = dumpCarryPos - 0.03; //0.45;
+    private double dumpDumpPos_auto = dumpDumpPos+0.03;
     // Hang
     private double armHang_Right = 0.5; private double armHang_Left = 0.5;
     private double dumpHangPos = 0.34;
