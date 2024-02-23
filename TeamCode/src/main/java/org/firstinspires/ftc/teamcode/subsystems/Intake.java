@@ -2,17 +2,18 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import android.hardware.Sensor;
 import android.util.Log;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
-
-
+@Config
 public class Intake implements Subsystem {
     //Hardware: 1 motor, 2 servo
     double syncFactor = 1.00;
@@ -24,12 +25,12 @@ public class Intake implements Subsystem {
     private double baseposl = 0.217;
     private double baseposr = 0.76715;
     private double baseposl_yield = 0.7; //0.36 + 0.37;
-    private double baseposr_yield = 0.29; //0.615 - 0.37;
-    private double outtakeposL = 0.804; //0.814 - 0.01; //0.804
-    private double outtakeposR = 0.1503; //0.1403 + 0.01; //0.1503
+    private double baseposr_yield = 1-baseposl_yield; //0.615 - 0.37;
+    private double outtakeposL = 0.586; //0.814 - 0.01; //0.804
+    private double outtakeposR = 0.1-outtakeposL; //0.1403 + 0.01; //0.1503
     //placeholder outtake position, may change depending on outtake
-    private double intakeposL = 0.031+0.02; //0.129+0.037-0.135;
-    private double intakeposR = 0.9575-0.02; //0.8595-0.037+0.135;
+    public static double intakeposL = 0.076; //0.129+0.037-0.135;
+    private double intakeposR = 1-intakeposL; //0.8595-0.037+0.135;
     private double lowerlimitL = 0.814;
     private double lowerlimitR = 0.13;
     private double upperlimitL = 0.09;
@@ -83,6 +84,10 @@ public class Intake implements Subsystem {
         intakeServoL.setPosition(baseposl_yield);
         intakeServoR.setPosition(baseposr_yield);
     }
+    public void toResetPos(){
+        intakeServoL.setPosition(0.5);
+        intakeServoR.setPosition(0.5);
+    }
 
     public void moveArm(double d){
         double targetPosR = intakeServoR.getPosition()+(0.01*d*syncFactor);
@@ -115,10 +120,14 @@ public class Intake implements Subsystem {
         return intakeMotor.getPower();
     }
 
+    public int getIntakeState(){
+        return intakeState;
+    }
+
 
     @Override
     public void update(TelemetryPacket packet) {
-
+        Log.v("trackerIntake", "" + intakeState);
         if (intakeState == 0) {//Base, idle
             toBasePosYield();
             intakeMotor.setPower(0);

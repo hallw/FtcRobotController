@@ -46,7 +46,6 @@ public class AATele extends LinearOpMode {
 
         NanoClock clock = NanoClock.system();
         double prevTime = clock.seconds();
-        int intakePosition = 0; // 0 = outtake; 1 = intake;
         int intakeCount = 0;
         double intakeStartTime = 0;
 
@@ -67,7 +66,7 @@ public class AATele extends LinearOpMode {
 
             if(!inAlignCmd) {
                 robot.mecanumDrive.setDrivePower(new Pose2d(-jsY, -jsX, -(0.8) * gamepad1.right_stick_x));
-                robot.mecanumDrive.setPowerFactor(0.7); //remove with actual robot.
+                robot.mecanumDrive.setPowerFactor(1); //remove with actual robot.
             }
 
             // LED
@@ -87,40 +86,13 @@ public class AATele extends LinearOpMode {
                 robot.intake.intakeState = 22;
             }
 
-            // INTAKE
-            /*if(smartGamepad1.a_pressed()){
-                if(intakePosition == 0 && robot.intake.intakeState == 0) {
-                    robot.intake.setIntakeState(1);
-                    intakePosition=1;
-                }
-                else{
-                    robot.intake.setIntakeState(2);
-                    intakePosition = 0;
-                    intakeCount = 0;
-                }
-            }
-            else if (intakePosition == 1 && robot.intake.intakeState == 1) {
-                if(robot.intake.intakeTop.getDistance(DistanceUnit.CM) < 7.5){
-                    intakeCount++;
-                }
-                else{
-                    intakeCount = 0;
-                }
-                if (intakeCount >= 3) {
-                    //lifts up the intake only when it is intaking and if intakeCount >= 3 or a is pressed
-                    robot.intake.setIntakeState(2);
-                    intakePosition = 0;
-                    intakeCount = 0;
-                }
-            }
-             */
-            if(intakePosition == 0 && robot.intake.intakeState == 0){//intake idle
+            if( robot.intake.intakeState == 0){//intake idle
                 if(smartGamepad1.a_pressed()){
                     robot.intake.setIntakeState(1);
-                    intakePosition = 1;
+                    Log.v("intakeState", "" + 1);
                 }
             }
-            else if(intakePosition == 1 && robot.intake.intakeState == 1){//intaking the pixels
+            else if(robot.intake.intakeState == 1){//intaking the pixels
                 if(robot.intake.intakeTop.getDistance(DistanceUnit.CM) < 7.5){
                     intakeCount++;
                 }
@@ -130,7 +102,7 @@ public class AATele extends LinearOpMode {
                 if (intakeCount >= 3 || smartGamepad1.a_pressed()) {
                     //lifts up the intake only when it is intaking and if intakeCount >= 3 or a is pressed
                     robot.intake.setIntakeState(2);
-                    intakePosition = 0;
+                    Log.v("intakeState", "" + 2);
                     intakeCount = 0;
                 }
             }
@@ -235,6 +207,7 @@ public class AATele extends LinearOpMode {
             //telemetry.addData("Right Slide Encoder", robot.outtake.lift.getRightEncoder());
             packet.put("Left Slide Encoder", robot.outtake.lift.getLeftEncoder());
             packet.put("Right Slide Encoder", robot.outtake.lift.getRightEncoder());
+            packet.put("Intake State", robot.intake.getIntakeState());
             double currentTime = clock.seconds();
             //telemetry.addData("Update time: ", currentTime - prevTime);
             prevTime = currentTime;

@@ -28,17 +28,27 @@ public class ServoTester extends LinearOpMode {
                 robot.outtake.resetArmPos();
                 //robot.outtake.resetDumpPos();
             }
-            /*
-            if(buttonA) {
-                robot.intake.setPower(1.0);
-            }
-            if(buttonB){
-                robot.intake.setPower(0);
-            }
-            robot.mecanumDrive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x));
-            */
 
-            //UG OUTTAKE
+            if(gamepad2.dpad_left){
+                Log.v("doSomething", "dpad left");
+                robot.intake.moveArmNoLimit(-0.5);
+            } if(gamepad2.dpad_right){
+                robot.intake.moveArmNoLimit(0.5);
+            }
+            if(gamepad2.a){
+                robot.intake.toResetPos();
+            }
+            if(gamepad2.b){
+                robot.intake.toBasePosYield();
+            }
+            if(gamepad2.x){
+                robot.intake.toIntakePos();
+            }
+            if(gamepad2.y){
+                robot.intake.toOuttakePos();
+            }
+
+            //UG OUTTAKE try to make it so gamepad 1 is all outtake and gamepad 2 is outtake
             boolean dpadUp = gamepad1.dpad_up;//move both +
             boolean dpadDown = gamepad1.dpad_down;//move both arms -
             boolean dpadRight = gamepad1.dpad_right;//adjust right arm +
@@ -57,12 +67,6 @@ public class ServoTester extends LinearOpMode {
             } else if (gamepad2.dpad_right){
                 //robot.intake.moveArmNoLimit(-0.1);
                 Log.v("intake", "isMoving " + (gamepad2.dpad_right || gamepad2.dpad_left));
-            }
-            if(gamepad2.a){
-                //robot.intake.toBasePos();
-            }
-            if(gamepad2.b){
-                //robot.intake.toBasePosYield();
             }
             if(gamepad1.left_bumper){
                 //robot.intake.setPower(1);
