@@ -17,6 +17,7 @@ import java.util.Date;
 @Config
 public class Outtake implements Subsystem{
     public static double HT_TO_SWING_AUTO = 9.0;
+    public boolean repickOuttake = false;
      //0.09;
     //Constants
     private double syncFactor=0.97;
@@ -366,7 +367,11 @@ public class Outtake implements Subsystem{
                 Log.v("StateMach", "lift moving to travelPos, liftState 21 " + (time - liftStartTime));
                 tempStartTime = System.currentTimeMillis();
                 //lift.goToLevel(1);  //go to the level where dumper is above intake
-                lift.goToHt(lift.inchToTicks(HT_TO_SWING_AUTO));
+                if (repickOuttake) {
+                    lift.goToHt(lift.inchToTicks(HT_TO_SWING_AUTO+3));
+                } else {
+                    lift.goToHt(lift.inchToTicks(HT_TO_SWING_AUTO));
+                }
                 Log.v("StateMach", "liftState: 21 -> 22. lift.goToHt " + HT_TO_SWING_AUTO);
             }
         }

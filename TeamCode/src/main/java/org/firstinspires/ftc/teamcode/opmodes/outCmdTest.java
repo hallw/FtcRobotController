@@ -21,7 +21,7 @@ public class outCmdTest extends LinearOpMode {
         //Servo init code here
         robot.intake.toBasePos();
         //robot.outtake.toIntakePos();
-        autoOutPrep outCmd = new autoOutPrep(robot);
+        autoOutPrep outCmd = new autoOutPrep(robot,false);
         autoOutDump dumpCmd = new autoOutDump(robot, drivetrain);
 
         // Start

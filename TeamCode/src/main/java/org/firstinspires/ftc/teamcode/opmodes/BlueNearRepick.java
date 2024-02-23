@@ -11,8 +11,9 @@ import org.firstinspires.ftc.teamcode.commands.alignBackdrop;
 import org.firstinspires.ftc.teamcode.commands.autoOutDump;
 import org.firstinspires.ftc.teamcode.commands.autoOutPrep;
 import org.firstinspires.ftc.teamcode.commands.backAfterDump;
-import org.firstinspires.ftc.teamcode.commands.dropIntakePreload;
 import org.firstinspires.ftc.teamcode.commands.foldOuttake;
+import org.firstinspires.ftc.teamcode.commands.repick;
+import org.firstinspires.ftc.teamcode.commands.dropIntakePreload;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 import org.firstinspires.ftc.teamcode.subsystems.CrabRobot;
 import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
@@ -21,16 +22,16 @@ import org.firstinspires.ftc.teamcode.util.Utilities;
 
 @Config
 @Autonomous
-public class BlueNear extends LinearOpMode {
-    public static boolean parkCenter = true; // Park center of field
+public class BlueNearRepick extends LinearOpMode {
+    public static boolean parkCenter = false; // Park center of field
     public static boolean IS_RED = false;     // IS_RED side?
     public static boolean ALIGN_RIGHT = false; // Align 1 inch from tile right side
     public static double FACE_BACKDROP_HEADERING = Math.toRadians(90);
-    public static double PARK_STRAFE_MIDDLE_TO_CENTER = 28;
-    public static double TAG_DIST = 6;
     public static double PARK_X_CORNER = 0;
     public static double PARK_X_CENTER = 53;
-    public static double PARK_Y = 30;
+    public static double REPICK_X = 49;
+    public static double REPICK_Y = -58;
+    public static double PARK_Y = 35;
     public static double drivePwr = 0.2;
     public static double hCoeff = 1;
 
@@ -52,9 +53,12 @@ public class BlueNear extends LinearOpMode {
         robot.outtake.toIntakePos();
         dropIntakePreload dropIntakePreload = new dropIntakePreload(robot);
         autoOutPrep outPrep = new autoOutPrep(robot,false);
-        autoOutDump outDump = new autoOutDump(robot, drivetrain);
-        backAfterDump dumpNBack = new backAfterDump(robot,drivetrain);
+        autoOutPrep outPrepr = new autoOutPrep(robot,true);
+        backAfterDump back = new backAfterDump(robot,drivetrain);
         foldOuttake fold = new foldOuttake(robot,drivetrain);
+        repick repick = new repick(robot,drivetrain);
+        autoOutDump outDump = new autoOutDump(robot, drivetrain);
+
 
         NanoClock clock = NanoClock.system();
         double startTime, currentTime;
@@ -88,33 +92,34 @@ public class BlueNear extends LinearOpMode {
                             .build()
             ));
             robot.runCommand(alignCmd);
-            robot.runCommand(dumpNBack);
+            robot.runCommand(back);
+            //dump yellow pixel
+            //Log.v("AUTODEBUG", "10: dump done");
 
-            // Park
-            if(!parkCenter){
-                robot.runCommand(drivetrain.followTrajectorySequence(
-                        drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+5))
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+13))
-                                .addTemporalMarker(0.1,()->robot.runCommand(fold))
-                                .build()
-                ));
-            }
-            else{
-                robot.runCommand(drivetrain.followTrajectorySequence(
-                        drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+5))
-                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+13))
-                                .addTemporalMarker(0.1,()->robot.runCommand(fold))
-                                .build()
-                ));
-            }
-
+            // Repick
+            robot.runCommand(drivetrain.followTrajectorySequence(
+                    drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
+                            .lineTo(new Vector2d(REPICK_X, PARK_Y-5))
+                            .addTemporalMarker(0.1,()->robot.runCommand(fold))
+                            .lineTo(new Vector2d(REPICK_X, REPICK_Y))
+                            .build()
+            ));
+            robot.runCommand(repick);
+            robot.runCommand(drivetrain.followTrajectory(
+                    drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
+                            .lineTo(new Vector2d(REPICK_X, PARK_Y-10)) // goto pos 3
+                            .addTemporalMarker(2.0,()->robot.runCommand(outPrepr))
+                            .splineTo(new Vector2d(30,PARK_Y-5),FACE_BACKDROP_HEADERING)
+                            .build()
+            ));
+            alignBackdrop alignCmd2 = new alignBackdrop(robot, drivetrain, drivePwr, hCoeff,8, telemetry);
+            robot.runCommand(alignCmd2);
+            robot.runCommand(outDump);
         } else if (elementPos == 2) { //middle
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
-                            .splineTo(new Vector2d(37, 18), FACE_BACKDROP_HEADERING)
-                            .addTemporalMarker(1.0,()->robot.runCommands(dropIntakePreload)) // drop purple pixel
+                            .splineTo(new Vector2d(37, 21.5), FACE_BACKDROP_HEADERING)
+                            .addTemporalMarker(2.0,()->robot.runCommands(dropIntakePreload)) // dump purple pixel
                             .build()
             ));
 
@@ -125,35 +130,37 @@ public class BlueNear extends LinearOpMode {
                             .addTemporalMarker(0.2, () -> robot.runCommands(outPrep))
                             .build()
             ));
-            robot.runCommand(alignCmd);
-            //dump yellow pixel
-            robot.runCommand(dumpNBack);
-            // Park
-            if(!parkCenter){
-                robot.runCommand(drivetrain.followTrajectorySequence(
-                        drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+5))
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+13))
-                                .addTemporalMarker(0.1,()->robot.runCommand(fold))
-                                .build()
-                ));
-            }
-            else{
-                robot.runCommand(drivetrain.followTrajectorySequence(
-                        drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+5))
-                                .lineTo(new Vector2d(PARK_X_CENTER, PARK_Y+13))
-                                .addTemporalMarker(0.1,()->robot.runCommand(fold))
-                                .build()
-                ));
-            }
 
-        } else {// right
+            robot.runCommand(alignCmd);
+            robot.runCommand(back); //dump yellow and back
+
+            // Repick
+            robot.runCommand(drivetrain.followTrajectorySequence(
+                    drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
+                            .lineTo(new Vector2d(REPICK_X, PARK_Y-5))
+                            .addTemporalMarker(0.1,()->robot.runCommand(fold))
+                            .lineTo(new Vector2d(REPICK_X, REPICK_Y))
+                            .build()
+            ));
+            robot.runCommand(repick);
+            // goto pos 3 and dump there
+            robot.runCommand(drivetrain.followTrajectory(
+                    drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
+                            .lineTo(new Vector2d(REPICK_X, PARK_Y-10)) // goto pos 3
+                            .addTemporalMarker(2.0,()->robot.runCommand(outPrepr))
+                            .splineTo(new Vector2d(30,PARK_Y-5),FACE_BACKDROP_HEADERING)
+                            .build()
+            ));
+            alignBackdrop alignCmd2 = new alignBackdrop(robot, drivetrain, drivePwr, hCoeff,8, telemetry);
+            robot.runCommand(alignCmd2);
+            robot.runCommand(outDump);
+
+        } else {// pos 3: right
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(28, 6), FACE_BACKDROP_HEADERING)
                             .lineTo(new Vector2d(28, 3))
-                            .addTemporalMarker(2.0,()->robot.runCommands(dropIntakePreload)) // drop purple pixel
+                            .addTemporalMarker(2.0,()->robot.runCommands(dropIntakePreload)) // dump purple pixel
                             .build()
             ));
 
@@ -165,27 +172,28 @@ public class BlueNear extends LinearOpMode {
                             .build()
             ));
             robot.runCommand(alignCmd);
-            //dump yellow pixel
-            robot.runCommand(dumpNBack);
-            // Park
-            if(!parkCenter){
-                robot.runCommand(drivetrain.followTrajectorySequence(
-                        drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+5))
-                                .lineTo(new Vector2d(PARK_X_CORNER, PARK_Y+13))
-                                .addTemporalMarker(0.1,()->robot.runCommand(fold))
-                                .build()
-                ));
-            }
-            else{
-                robot.runCommand(drivetrain.followTrajectorySequence(
-                        drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(50, PARK_Y+5))
-                                .lineTo(new Vector2d(50, PARK_Y+13))
-                                .addTemporalMarker(0.1,()->robot.runCommand(fold))
-                                .build()
-                ));
-            }
+            robot.runCommand(back); //dump yellow and back
+
+            // Repick
+            robot.runCommand(drivetrain.followTrajectorySequence(
+                    drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
+                            .lineTo(new Vector2d(REPICK_X, PARK_Y-5))
+                            .addTemporalMarker(0.1,()->robot.runCommand(fold))
+                            .lineTo(new Vector2d(REPICK_X, REPICK_Y))
+                            .build()
+            ));
+            robot.runCommand(repick);
+            // goto pos 1 and dump there
+            robot.runCommand(drivetrain.followTrajectory(
+                    drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
+                            .lineTo(new Vector2d(REPICK_X, PARK_Y-10)) // goto pos 3
+                            .addTemporalMarker(2.0,()->robot.runCommand(outPrepr))
+                            .splineTo(new Vector2d(18,PARK_Y-5),FACE_BACKDROP_HEADERING)
+                            .build()
+            ));
+            alignBackdrop alignCmd2 = new alignBackdrop(robot, drivetrain, drivePwr, hCoeff,8, telemetry);
+            robot.runCommand(alignCmd2);
+            robot.runCommand(outDump);
         }
 
     }

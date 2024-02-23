@@ -21,10 +21,10 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
     public static double ALIGN_R_R_X_OFFSET = 30;
     public static double ALIGN_R_R_Y_OFFSET = 25;
 
-    public static double ALIGN_L_L_X_OFFSET = 105;
-    public static double ALIGN_L_L_Y_OFFSET = -15;
+    public static double ALIGN_L_L_X_OFFSET = 95;
+    public static double ALIGN_L_L_Y_OFFSET = -25;
     public static double ALIGN_L_R_X_OFFSET = 60;
-    public static double ALIGN_L_R_Y_OFFSET = 25;
+    public static double ALIGN_L_R_Y_OFFSET = 30;
 
     static final int STREAM_WIDTH = 640; // resolution of camera   1280
     static final int STREAM_HEIGHT = 480; // resolution of camera  720

@@ -12,24 +12,30 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
+import java.net.CacheRequest;
+
 
 public class Intake implements Subsystem {
+    CrabRobot robot;
     //Hardware: 1 motor, 2 servo
     double syncFactor = 1.00;
     public double LPos, RPos;
     private DcMotorEx intakeMotor;
-    private double motorPosition = 0; private Servo intakeServoL;
-    private Servo intakeServoR;
+    private double motorPosition = 0;
+    public Servo intakeServoL;
+    public Servo intakeServoR;
     public DistanceSensor intakeTop; public DistanceSensor intakeBack;
     private double baseposl = 0.217;
     private double baseposr = 0.76715;
-    private double baseposl_yield = 0.7; //0.36 + 0.37;
-    private double baseposr_yield = 0.29; //0.615 - 0.37;
-    private double outtakeposL = 0.804; //0.814 - 0.01; //0.804
-    private double outtakeposR = 0.1503; //0.1403 + 0.01; //0.1503
+    private double baseposl_yield = 0.316;
+    private double baseposr_yield = 1-baseposl_yield;
+    private double outtakeposL = 0.206; //0.804;
+    private double outtakeposR = 1-outtakeposL; //0.1503;
     //placeholder outtake position, may change depending on outtake
-    private double intakeposL = 0.031+0.02; //0.129+0.037-0.135;
-    private double intakeposR = 0.9575-0.02; //0.8595-0.037+0.135;
+    private double intakeposL = 0.976; //0.031+0.02;
+    private double intakeposR = 1-intakeposL; //0.9575-0.02;
+    private double retakeposL = 0.896;
+    private double retakeposR = 1-retakeposL;
     private double lowerlimitL = 0.814;
     private double lowerlimitR = 0.13;
     private double upperlimitL = 0.09;
@@ -40,13 +46,18 @@ public class Intake implements Subsystem {
     private double motorDelayAfterOut = 2000; // in ms. after arm moves to outtake, delay to stop motor
     private double motorDelayForAuto = 1300; // in ms. after arm moves to outtake, delay to stop motor
     private double motorDelayForAutoOutput = 800;
+    private double repickTime = 5000;
+    private int intakeCount = 0;
 
     private double outtakeStartTime = 0;
+    private double intakeStartTime = 0;
     private double intakeReverseStartTime = 0;
     private double motorSweepPwr = -1.0;
     private double autoOutputPwr = -0.4;
+    public boolean isIntakeDone = false;
 
-    public Intake(Robot robot) {
+    public Intake(CrabRobot robot) {
+        this.robot = robot;
         intakeMotor = robot.getMotor("intakeMotor");
         intakeServoL = robot.getServo("intakeServoL");
         intakeServoR = robot.getServo("intakeServoR");
@@ -82,6 +93,11 @@ public class Intake implements Subsystem {
     public void toBasePosYield(){
         intakeServoL.setPosition(baseposl_yield);
         intakeServoR.setPosition(baseposr_yield);
+    }
+
+    public void toRepickPos(){
+        intakeServoR.setPosition(retakeposR);
+        intakeServoL.setPosition(retakeposL);
     }
 
     public void moveArm(double d){
@@ -182,7 +198,38 @@ public class Intake implements Subsystem {
             intakeServoL.setPosition(LPos);
         } else if (intakeState == 41) {
             intakeServoR.setPosition(RPos);
+
+        } else if (intakeState == 51) {// repick Intake
+            toRepickPos();
+            intakeMotor.setPower(this.motorSweepPwr*0.95);
+            intakeStartTime = System.currentTimeMillis();
+            intakeState = 52;
+        } else if (intakeState == 52) {//pick first
+            if (intakeBack.getDistance(DistanceUnit.CM) < 5.0){
+                intakeServoL.setPosition(retakeposL+0.015);
+                intakeServoR.setPosition(retakeposR-0.015);
+                intakeState = 53;
+            }
+        } else if (intakeState == 53) { //pick second
+            if(intakeTop.getDistance(DistanceUnit.CM) < 7.5){
+                intakeCount++;
+            }
+            else{
+                intakeCount = 0;
+            }
+            if ((System.currentTimeMillis() - intakeStartTime >= this.repickTime)
+                || intakeCount >= 3){
+                isIntakeDone = true;
+                setIntakeState(2);
+            }
         }
+        else if (intakeState == 100) { // test state
+
+        }
+
+
+
+
 
 
         //intakeMotor.setPower(motorPosition);

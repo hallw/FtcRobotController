@@ -46,8 +46,8 @@ public class BlueFar extends LinearOpMode {
         robot.intake.toBasePos();
         robot.outtake.toIntakePos();
         dropIntakePreload dropIntakePreload = new dropIntakePreload(robot);
-        autoOutPrep outCmd = new autoOutPrep(robot);
-        autoOutPrep outPrep = new autoOutPrep(robot);
+        autoOutPrep outCmd = new autoOutPrep(robot,false);
+        autoOutPrep outPrep = new autoOutPrep(robot,false);
         autoOutDump outDump = new autoOutDump(robot, drivetrain);
 
         NanoClock clock = NanoClock.system();
@@ -69,11 +69,10 @@ public class BlueFar extends LinearOpMode {
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(28, -5), Math.toRadians(-90))
                             .back(2)
+                            .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
                             .build()
             ));
             //Log.v("AUTODEBUG", "2: dump purple");
-            //dump purple pixel
-            robot.runCommand(dropIntakePreload);
             //Log.v("AUTODEBUG", "3: go to backdrop");
 
             robot.runCommand(drivetrain.followTrajectorySequence(
@@ -118,10 +117,9 @@ public class BlueFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(23, -4), Math.toRadians(-180))
+                            .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
                             .build()
             ));
-            //dump purple pixel
-            robot.runCommand(dropIntakePreload);
 
             // go to back drop
             robot.runCommand(drivetrain.followTrajectorySequence(
@@ -161,11 +159,10 @@ public class BlueFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(14, -9), Math.toRadians(180))
+                            .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
                             .build()
             ));
             //Log.v("AUTODEBUG", "2: dump purple");
-            //dump purple pixel
-            robot.runCommand(dropIntakePreload);
             //Log.v("AUTODEBUG", "3: go to backdrop");
 
             robot.runCommand(drivetrain.followTrajectorySequence(
