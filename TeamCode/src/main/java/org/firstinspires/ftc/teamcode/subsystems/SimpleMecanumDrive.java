@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.CachingSensor;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
-
+@Config
 public class SimpleMecanumDrive implements Subsystem {
     public double powerFactor = 1;
 
@@ -23,6 +24,12 @@ public class SimpleMecanumDrive implements Subsystem {
     private int MOTOR_LR= 3;
     private int MOTOR_RR =2;
     private int MOTOR_RF= 1;
+
+    public static double startPos = 0.1; //a
+    public static double startVal = 0.2; //b
+    public static double endSlowPos = 0.95;//c
+    public static double endSlowVal = 0.4; //d
+    public static double maxVal = 1; //f
 
     private DcMotorEx[] motors = new DcMotorEx[4];
     private CachingSensor<Float> headingSensor;
@@ -158,11 +165,6 @@ public class SimpleMecanumDrive implements Subsystem {
 
     public double mapJsRadiusVal(double jsVal, boolean slow){
         //https://www.desmos.com/calculator/ekyhsv03yo
-        double startPos = 0.1; //a
-        double startVal = 0.4; //b
-        double endSlowPos = 0.95;//c
-        double endSlowVal = 0.6; //d
-        double maxVal = 1; //f
         double startSlope = startVal/startPos;
         double defSlope = (endSlowVal-startVal)/(endSlowPos-startPos);
         double endSlope = (maxVal-endSlowVal)/(1-endSlowPos);

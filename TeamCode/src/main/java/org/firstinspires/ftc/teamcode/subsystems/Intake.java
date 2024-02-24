@@ -223,9 +223,12 @@ public class Intake implements Subsystem {
                 setIntakeState(2);
             }
         }
+        /*
         else if (intakeState == 100) { // test state
 
         }
+
+         */
 
 
 

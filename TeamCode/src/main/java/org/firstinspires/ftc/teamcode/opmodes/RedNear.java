@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
 @Config
 @Autonomous
 public class RedNear extends LinearOpMode {
-    public static boolean parkCenter = true;
+    public static boolean parkCenter = false;
     public static boolean IS_RED = true;
     public static boolean ALIGN_RIGHT = true;
     public static double POS1_SPL1_X = 24;
@@ -30,8 +30,8 @@ public class RedNear extends LinearOpMode {
     public static double POS1_DUMP_X = 31;
     public static double DUMP_Y = -27;
 
-    public static double POS2_SPL1_X = 37;
-    public static double POS2_SPL1_Y = -20;
+    public static double POS2_SPL1_X = 36.5;
+    public static double POS2_SPL1_Y = -16;
     public static double POS3_SPL1_X = 26;
     public static double POS3_SPL1_Y = -24;
     public static double FACE_BACKDROP_HEADERING = Math.toRadians(-90);
@@ -39,7 +39,7 @@ public class RedNear extends LinearOpMode {
     public static double PARK_CORNER_X = 0;
     public static double PARK_STRAFE_MIDDLE_TO_CENTER = 28;
     public static double TAG_DIST = 6;
-    public static double PARK_FORWARD = 10.0;
+    public static double PARK_FORWARD = 11.5;
     public static double drivePwr = 0.2;
     public static double hCoeff = 1;
 
@@ -105,7 +105,7 @@ public class RedNear extends LinearOpMode {
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
                                 .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-5))
-                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-13))
+                                .lineTo(new Vector2d(PARK_CENTER_X, DUMP_Y-16))
                                 .addTemporalMarker(0.1,()->robot.runCommand(fold))
                                 .build()
                 ));
@@ -114,7 +114,7 @@ public class RedNear extends LinearOpMode {
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
                                 .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-5))
-                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-13))
+                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-16))
                                 .addTemporalMarker(0.1,()->robot.runCommand(fold))
                                 .build()
                 ));
@@ -124,13 +124,13 @@ public class RedNear extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
                             .splineTo(new Vector2d(POS2_SPL1_X, POS2_SPL1_Y), FACE_BACKDROP_HEADERING)
-                            .addTemporalMarker(1.0,()->robot.runCommands(dropIntakePreload))
+                            .addTemporalMarker(2.0,()->robot.runCommands(dropIntakePreload))
                             .build()
             ));
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
-                            .lineTo(new Vector2d(24, DUMP_Y))
+                            .lineTo(new Vector2d(25, DUMP_Y))
                             .addTemporalMarker(0.2, () -> robot.runCommands(outPrep))
                             .build()
             ));
@@ -188,7 +188,7 @@ public class RedNear extends LinearOpMode {
             else{
                 robot.runCommand(drivetrain.followTrajectorySequence(
                         drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-12))
+                                .lineTo(new Vector2d(PARK_CORNER_X, DUMP_Y-5))
                                 .forward(PARK_FORWARD)
                                 .addTemporalMarker(0.1,()->robot.runCommand(fold))
                                 .build()

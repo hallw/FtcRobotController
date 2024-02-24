@@ -22,13 +22,13 @@ import org.firstinspires.ftc.teamcode.util.Utilities;
 @Config
 @Autonomous
 public class BlueNear extends LinearOpMode {
-    public static boolean parkCenter = true; // Park center of field
+    public static boolean parkCenter = false; // Park center of field
     public static boolean IS_RED = false;     // IS_RED side?
     public static boolean ALIGN_RIGHT = false; // Align 1 inch from tile right side
     public static double FACE_BACKDROP_HEADERING = Math.toRadians(90);
     public static double PARK_STRAFE_MIDDLE_TO_CENTER = 28;
     public static double TAG_DIST = 6;
-    public static double PARK_X_CORNER = 0;
+    public static double PARK_X_CORNER = 5;
     public static double PARK_X_CENTER = 53;
     public static double PARK_Y = 30;
     public static double drivePwr = 0.2;

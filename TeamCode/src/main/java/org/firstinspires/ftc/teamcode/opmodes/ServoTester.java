@@ -36,7 +36,7 @@ public class ServoTester extends LinearOpMode {
                 robot.intake.moveArmNoLimit(0.5);
             }
             if(gamepad2.a){
-                robot.intake.toResetPos();
+                robot.intake.toBasePos();
             }
             if(gamepad2.b){
                 robot.intake.toBasePosYield();
