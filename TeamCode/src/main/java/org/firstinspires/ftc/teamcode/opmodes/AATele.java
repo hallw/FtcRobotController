@@ -153,6 +153,9 @@ public class AATele extends LinearOpMode {
             if(smartGamepad2.left_bumper && smartGamepad1.y){
                 robot.droneLauncher.release();
             }
+            else{
+                robot.droneLauncher.hold();
+            }
 
                 //UG OUTTAKE, single steps
             if(smartGamepad2.left_trigger>0) { robot.outtake.moveDumper(-0.5);}

@@ -67,9 +67,9 @@ public class BlueNear extends LinearOpMode {
         //Log.v("AUTODEBUG", "0: start");
         elementPos = rvis.getTeamPropOrientation(IS_RED, ALIGN_RIGHT);
         //Log.v("AUTODEBUG", "1: elementPos = %0d");
-        //telemetry.addData("Element pos", elementPos);
+        telemetry.addData("Element pos", elementPos);
         telemetry.addData("Is parking center?: ", parkCenter);
-        telemetry.addData("Detected Pos:", elementPos);
+        telemetry.update();
 
 
         if (elementPos == 1) {//left

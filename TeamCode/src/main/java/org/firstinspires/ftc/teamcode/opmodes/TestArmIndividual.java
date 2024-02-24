@@ -21,6 +21,7 @@ public class TestArmIndividual extends LinearOpMode {
     public static double intakeL = 0.166; // start with intake pos
     public static double intakeR = 1 - intakeL;
     public static double intakeStep = 0.01;
+    public static double dronePos = 0.3;
 
 
     //armIntake_Right = 0.555; public static double armIntake_Left = 0.46;
@@ -59,6 +60,15 @@ public class TestArmIndividual extends LinearOpMode {
             // Outtake tests
             //Slide
             telemetry.addData("Slide Height ", slideHt);
+            if (smartGamepad1.right_bumper){
+                robot.droneLauncher.setPos(dronePos);
+                dronePos += 0.1;
+            }
+            if (smartGamepad1.left_bumper){
+                robot.droneLauncher.setPos(dronePos);
+                dronePos -= 0.1;
+            }
+            telemetry.addData("Drone position", dronePos);
             if(smartGamepad2.dpad_up_pressed()){
                 robot.outtake.lift.goToHtInches(slideHt);
                 slideHt += slideHtStep;
