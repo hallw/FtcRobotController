@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 
 @Config
 @Autonomous
-public class outCmdTest extends LinearOpMode {
+public class TestOutCmd extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
