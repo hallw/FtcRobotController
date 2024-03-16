@@ -136,6 +136,7 @@ public class alignBackdrop implements Command {
     @Override
     public void stop() {
         mecanumDrive.setDrivePower(new Pose2d(0,0,0));
+        isReached = false;
     }
 
     @Override

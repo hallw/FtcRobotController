@@ -43,15 +43,21 @@ public class backAfterDump implements Command {
     @Override
     public void update() {
         if (state == 1) {
-            if (System.currentTimeMillis() - time > 1100) { // drop pixel time
-                mecanumDrive.setDrivePower(new Pose2d(-0.1, 0, 0)); // back a little
+            if (System.currentTimeMillis() - time > 1000) { // drop pixel time
+                robot.outtake.lift.adjustLift(1, false);
                 time = System.currentTimeMillis();
                 state = 2;
+            }
+        }else if(state == 2){
+            if (System.currentTimeMillis() - time > 100) {
+                mecanumDrive.setDrivePower(new Pose2d(-0.1, 0, 0)); // back a little
+                time = System.currentTimeMillis();
+                state = 3;
                 Log.v("autoOutDump", "-> back a little");
             }
-        } else if (state == 2) {
+        } else if (state == 3) {
             if (System.currentTimeMillis() - time > 300) {
-                state = 3;
+                state = 4;
                 mecanumDrive.setDrivePower(new Pose2d(0, 0, 0));
             }
         }
@@ -63,7 +69,7 @@ public class backAfterDump implements Command {
 
     @Override
     public boolean isCompleted() {
-        if (this.state == 3) {
+        if (this.state == 4) {
             state = 0;
             return (true);
         } else {

@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Config
 public class Outtake implements Subsystem{
-    public static double HT_TO_SWING_AUTO = 9.0;
+    public static double HT_TO_SWING_AUTO = 10.0;
     public boolean repickOuttake = false;
      //0.09;
     //Constants

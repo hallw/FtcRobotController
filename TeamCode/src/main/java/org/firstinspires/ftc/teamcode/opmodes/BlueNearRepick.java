@@ -27,16 +27,16 @@ public class BlueNearRepick extends LinearOpMode {
     public static boolean IS_RED = false;     // IS_RED side?
     public static boolean ALIGN_RIGHT = false; // Align 1 inch from tile right side
     public static double FACE_BACKDROP_HEADERING = Math.toRadians(90);
-    public static double POS1_SPL_X = 27; public static double POS1_SPL_Y = 23.5;
-    public static double POS1_DUMP_X = 18;
-    public static double POS2_SPL_X = 37; public static double POS2_SPL_Y = 20;
+    public static double POS1_SPL_X = 26; public static double POS1_SPL_Y = 23;
+    public static double POS1_DUMP_X = 19;
+    public static double POS2_SPL_X = 37; public static double POS2_SPL_Y = 22;
     public static double POS2_DUMP_X = 25;
     public static double POS3_SPL_X = 28; public static double POS3_SPL_Y = 6;
     public static double POS3_DUMP_X = 31;
     public static double PARK_X_CORNER = 0;
     public static double PARK_X_CENTER = 53;
     public static double PARK_Y = 34.5;
-    public static double REPICK_X = 48;
+    public static double REPICK_X = 46.5;
     public static double REPICK_Y = -58.5;
 
     public static double drivePwr = 0.2;
@@ -88,7 +88,7 @@ public class BlueNearRepick extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(POS1_SPL_X, POS1_SPL_Y), FACE_BACKDROP_HEADERING)//22
-                            .addTemporalMarker(1.0,()->robot.runCommands(dropIntakePreload))
+                            .addTemporalMarker(1.5,()->robot.runCommands(dropIntakePreload))
                             .build()
             ));
 
@@ -127,10 +127,10 @@ public class BlueNearRepick extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
                             .splineTo(new Vector2d(POS2_SPL_X, POS2_SPL_Y), FACE_BACKDROP_HEADERING)
-                            .addTemporalMarker(2.0,()->robot.runCommands(dropIntakePreload)) // dump purple pixel
+                            //.addTemporalMarker(3.5,()->) // dump purple pixel
                             .build()
             ));
-
+            robot.runCommands(dropIntakePreload);
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
@@ -167,7 +167,7 @@ public class BlueNearRepick extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(POS3_SPL_X, POS3_SPL_Y), FACE_BACKDROP_HEADERING)
-                            .lineTo(new Vector2d(POS3_SPL_X, POS3_SPL_Y-3.5))
+                            .lineTo(new Vector2d(POS3_SPL_X, POS3_SPL_Y-3))
                             .addTemporalMarker(2.8,()->robot.runCommands(dropIntakePreload)) // dump purple pixel
                             .build()
             ));

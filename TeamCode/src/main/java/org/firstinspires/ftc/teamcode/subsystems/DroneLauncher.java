@@ -9,10 +9,10 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 @Config
 public class DroneLauncher implements Subsystem {
-    private Servo droneTrigger;
+    public Servo droneTrigger;
     Telemetry telemetry;
-    public static double holdPos = 0.0;
-    public static double releasePos = 0.1;//0.1
+    public static double holdPos = 0.45;
+    public static double releasePos = 0.65;//0.1
 
     public DroneLauncher(Robot robot, Telemetry telemetry) {
         this.telemetry = telemetry;

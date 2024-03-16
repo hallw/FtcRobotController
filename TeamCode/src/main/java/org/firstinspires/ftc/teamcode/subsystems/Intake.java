@@ -53,7 +53,7 @@ public class Intake implements Subsystem {
     private double intakeStartTime = 0;
     private double intakeReverseStartTime = 0;
     private double motorSweepPwr = -1.0;
-    private double autoOutputPwr = -0.4;
+    private double autoOutputPwr = -0.2;
     public boolean isIntakeDone = false;
 
     public Intake(CrabRobot robot) {

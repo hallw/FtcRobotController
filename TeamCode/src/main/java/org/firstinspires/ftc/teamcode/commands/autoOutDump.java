@@ -76,6 +76,7 @@ public class autoOutDump implements Command {
 
     @Override
     public void stop() {
+        state = 0;
     }
 
     @Override

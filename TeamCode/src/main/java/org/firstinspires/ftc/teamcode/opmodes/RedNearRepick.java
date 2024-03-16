@@ -27,7 +27,7 @@ public class RedNearRepick extends LinearOpMode {
     public static boolean IS_RED = true;
     public static boolean ALIGN_RIGHT = true;
     public static double POS1_SPL1_X = 24;
-    public static double POS1_SPL1_Y = -4;
+    public static double POS1_SPL1_Y = -2;
     public static double POS1_DUMP_X = 31;
     public static double POS2_DUMP_X = 25;
     public static double POS3_DUMP_X = 18;

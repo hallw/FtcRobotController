@@ -28,7 +28,7 @@ public class BlueNear extends LinearOpMode {
     public static double FACE_BACKDROP_HEADERING = Math.toRadians(90);
     public static double PARK_STRAFE_MIDDLE_TO_CENTER = 28;
     public static double TAG_DIST = 6;
-    public static double PARK_X_CORNER = 5;
+    public static double PARK_X_CORNER = 4;
     public static double PARK_X_CENTER = 53;
     public static double PARK_Y = 30;
     public static double drivePwr = 0.2;

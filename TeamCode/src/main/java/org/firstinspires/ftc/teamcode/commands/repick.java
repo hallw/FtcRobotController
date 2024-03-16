@@ -13,6 +13,8 @@ public class repick implements Command {
     //double duration;
     NanoClock clock;
     DriveTrain mecanumDrive;
+    private double repickStartTime = 0;
+    boolean timeout = false;
 
     public repick(CrabRobot robot, DriveTrain drive) {
         this.robot= robot;
@@ -24,12 +26,16 @@ public class repick implements Command {
     public void start() {
         this.robot.intake.intakeState = 51;
         mecanumDrive.setDrivePower(new Pose2d(-0.05, 0, 0));
+        repickStartTime = System.currentTimeMillis();
     }
 
     @Override
     public void update() {
         if(robot.intake.isIntakeDone == true){
             mecanumDrive.setDrivePower(new Pose2d(0.3,0,0));
+        }
+        if(System.currentTimeMillis() - repickStartTime >= 5000){
+            timeout = true;
         }
     }
 
@@ -40,6 +46,6 @@ public class repick implements Command {
 
     @Override
     public boolean isCompleted() {
-        return (this.robot.intake.intakeState == 0);
+        return (this.robot.intake.intakeState == 0 || timeout);
     }
 }

@@ -152,11 +152,11 @@ public class AATele extends LinearOpMode {
             // Drone launcher
             if(smartGamepad2.left_bumper && smartGamepad1.y){
                 robot.droneLauncher.release();
-                Log.v("drone","launch");
+                //Log.v("drone","launch");
             }
             else{
                 robot.droneLauncher.hold();
-                Log.v("drone", "holding");
+                //Log.v("drone", "holding");
             }
 
                 //UG OUTTAKE, single steps
@@ -219,7 +219,7 @@ public class AATele extends LinearOpMode {
             double currentTime = clock.seconds();
             //telemetry.addData("Update time: ", currentTime - prevTime);
             prevTime = currentTime;
-            dashboard.sendTelemetryPacket(packet);
+            //dashboard.sendTelemetryPacket(packet);
             }
         }
     }

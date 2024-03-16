@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.util.Utilities;
 @Config
 @Autonomous
 public class RedFar extends LinearOpMode {
-    public static boolean parkCenter = false; // Park center of field
+    public static boolean parkCenter = true; // Park center of field
     public static boolean IS_RED = true;     // IS_RED side?
     public static boolean ALIGN_RIGHT = false; // Align 1 inch from tile right side
     public static double drivePwr = 0.2;
@@ -72,18 +72,18 @@ public class RedFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(13, 9), Math.toRadians(-180))
-                            .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
+                            //.addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
                             .build()
             ));
             //Log.v("AUTODEBUG", "2: dump purple");
-
+            robot.runCommand(dropIntakePreload);
             //Log.v("AUTODEBUG", "3: go to backdrop");
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
                             .turn(Math.toRadians(45), 1,0.5)
-                            .splineTo(new Vector2d(2, -2), Math.toRadians(-90))
-                            .splineTo(new Vector2d(2, -60), Math.toRadians(-90))
+                            .splineTo(new Vector2d(4, -2), Math.toRadians(-90))
+                            .splineTo(new Vector2d(4, -60), Math.toRadians(-90))
                             .build()
             ));
             robot.runCommand(drivetrain.followTrajectorySequence(
@@ -122,15 +122,15 @@ public class RedFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
                             .splineTo(new Vector2d(21, 4), Math.toRadians(-180))
-                            .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
+                            //.addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
                             .build()
             ));
-
+            robot.runCommand(dropIntakePreload);
             // go to back drop
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                            .splineTo(new Vector2d(2, -2), Math.toRadians(-90))
-                            .splineTo(new Vector2d(2, -60), Math.toRadians(-90))
+                            .splineTo(new Vector2d(4, -2), Math.toRadians(-90))
+                            .splineTo(new Vector2d(4, -60), Math.toRadians(-90))
                             .build()
             ));
             robot.runCommand(drivetrain.followTrajectorySequence(
@@ -167,20 +167,20 @@ public class RedFar extends LinearOpMode {
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
-                            .splineTo(new Vector2d(25, 5), Math.toRadians(90))
-                            .back(3)
-                            .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
+                            .splineTo(new Vector2d(25, 4), Math.toRadians(90))
+                            .back(2)
+                            //.addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
                             .build()
             ));
-            //robot.runCommand(dropIntakePreload);
+            robot.runCommand(dropIntakePreload);
             //Log.v("AUTODEBUG", "2: dump purple");
             //Log.v("AUTODEBUG", "3: go to backdrop");
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
                             .turn(Math.toRadians(45), 1,0.5)
-                            .splineTo(new Vector2d(2, -2), Math.toRadians(-90))
-                            .splineTo(new Vector2d(2, -60), Math.toRadians(-90))
+                            .splineTo(new Vector2d(4, -2), Math.toRadians(-90))
+                            .splineTo(new Vector2d(4, -60), Math.toRadians(-90))
                             //.lineTo(new Vector2d(2, -74))
                             .build()
             ));

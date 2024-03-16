@@ -19,10 +19,12 @@ import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.subsystems.RobotVision;
 import org.firstinspires.ftc.teamcode.util.Utilities;
 
+import java.util.Vector;
+
 @Config
 @Autonomous
 public class BlueFar extends LinearOpMode {
-    public static boolean parkCenter = false; // Park center of field
+    public static boolean parkCenter = true; // Park center of field
     public static boolean IS_RED = false;     // IS_RED side?
     public static boolean ALIGN_RIGHT = true; // Align 1 inch from tile right side
 
@@ -73,7 +75,7 @@ public class BlueFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
                             .splineTo(new Vector2d(28, -5), Math.toRadians(-90))
-                            .back(2)
+                            .lineTo(new Vector2d(28,-3))
                             .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
                             .build()
             ));
@@ -83,8 +85,8 @@ public class BlueFar extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
                             .turn(Math.toRadians(45), 1,0.5)
-                            .splineTo(new Vector2d(5, 2), Math.toRadians(90))
-                            .splineTo(new Vector2d(5, 63), Math.toRadians(90))// go to backdrop
+                            .splineTo(new Vector2d(5.5, 2), Math.toRadians(90))
+                            .splineTo(new Vector2d(5.5, 63), Math.toRadians(90))// go to backdrop
                             //.lineTo(new Vector2d(2, -74))
                             .build()
             ));
@@ -131,8 +133,8 @@ public class BlueFar extends LinearOpMode {
             // go to back drop
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                            .splineTo(new Vector2d(5, 2), Math.toRadians(90))
-                            .splineTo(new Vector2d(5, 60), Math.toRadians(90))
+                            .splineTo(new Vector2d(5.5, 2), Math.toRadians(90))
+                            .splineTo(new Vector2d(5.5, 60), Math.toRadians(90))
                             .build()
             ));
             robot.runCommand(drivetrain.followTrajectorySequence(
@@ -177,8 +179,8 @@ public class BlueFar extends LinearOpMode {
 
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(drivetrain.getPoseEstimate())
-                            .splineTo(new Vector2d(4, 2), Math.toRadians(90))
-                            .splineTo(new Vector2d(4, 60), Math.toRadians(90))// go to backdrop
+                            .splineTo(new Vector2d(5.5, 2), Math.toRadians(90))
+                            .splineTo(new Vector2d(5.5, 60), Math.toRadians(90))// go to backdrop
                             //.lineTo(new Vector2d(2, -74))
                             .build()
             ));

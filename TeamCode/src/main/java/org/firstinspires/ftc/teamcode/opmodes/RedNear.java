@@ -26,14 +26,14 @@ public class RedNear extends LinearOpMode {
     public static boolean IS_RED = true;
     public static boolean ALIGN_RIGHT = true;
     public static double POS1_SPL1_X = 24;
-    public static double POS1_SPL1_Y = -4;
+    public static double POS1_SPL1_Y = -6;
     public static double POS1_DUMP_X = 31;
     public static double DUMP_Y = -27;
 
     public static double POS2_SPL1_X = 36.5;
-    public static double POS2_SPL1_Y = -16;
-    public static double POS3_SPL1_X = 26;
-    public static double POS3_SPL1_Y = -24;
+    public static double POS2_SPL1_Y = -14;
+    public static double POS3_SPL1_X = 27;
+    public static double POS3_SPL1_Y = -23;
     public static double FACE_BACKDROP_HEADERING = Math.toRadians(-90);
     public static double PARK_CENTER_X = 50;
     public static double PARK_CORNER_X = 0;
@@ -83,11 +83,10 @@ public class RedNear extends LinearOpMode {
         if (elementPos == 1) {//left
             robot.runCommand(drivetrain.followTrajectorySequence(
                     drivetrain.trajectorySequenceBuilder(new Pose2d())
-                            .splineTo(new Vector2d(POS1_SPL1_X+5, POS1_SPL1_Y), FACE_BACKDROP_HEADERING)
-                            .lineTo(new Vector2d(POS1_SPL1_X+5, POS1_SPL1_Y+2))
-                            .addTemporalMarker(1.0,()->robot.runCommand(dropIntakePreload))
+                            .splineTo(new Vector2d(POS1_SPL1_X+5, POS1_SPL1_Y+3), FACE_BACKDROP_HEADERING)
                             .build()
             ));
+            robot.runCommand(dropIntakePreload);
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
@@ -123,10 +122,10 @@ public class RedNear extends LinearOpMode {
         } else if (elementPos == 2) { //middle
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
-                            .splineTo(new Vector2d(POS2_SPL1_X, POS2_SPL1_Y), FACE_BACKDROP_HEADERING)
-                            .addTemporalMarker(2.0,()->robot.runCommands(dropIntakePreload))
+                            .splineTo(new Vector2d(POS2_SPL1_X, POS2_SPL1_Y+2), FACE_BACKDROP_HEADERING)
                             .build()
             ));
+            robot.runCommands(dropIntakePreload);
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(drivetrain.getPoseEstimate())
@@ -161,9 +160,10 @@ public class RedNear extends LinearOpMode {
             robot.runCommand(drivetrain.followTrajectory(
                     drivetrain.trajectoryBuilder(new Pose2d())
                             .splineTo(new Vector2d(POS3_SPL1_X, POS3_SPL1_Y), FACE_BACKDROP_HEADERING)
-                            .addTemporalMarker(2.0,()->robot.runCommand(dropIntakePreload))
+                            //.lineTo(new Vector2d(POS3_SPL1_X,POS3_SPL1_Y+1))
                             .build()
             ));
+            robot.runCommand(dropIntakePreload);
 
             // go to back drop
             robot.runCommand(drivetrain.followTrajectory(
